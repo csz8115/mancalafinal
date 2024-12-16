@@ -1,43 +1,33 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { prisma } from "@/utils/prisma";
 
 export async function middleware(request: NextRequest) {
-    const sessionId = request.cookies.get('sessionId')?.value;
+    // Get the session cookie
+    const session = request.cookies.get("session");
 
-    if (!sessionId) {
-        return NextResponse.redirect(new URL('/login', request.url));
+    // If the session cookie is not set, redirect to the login page
+    if (!session) {
+        return NextResponse.redirect("http://localhost:3000/login");
     }
 
-    try {
-        // Check if session exists in database
-        const session = await prisma.session.findUnique({
-            where: {
-                sessionId,
-            },
-        });
+    // Get the session payload
+    const sessionId = session.value;
 
-        if (!session) {
-            // Clear invalid session cookie and redirect to login
-            const response = NextResponse.redirect(new URL('/login', request.url));
-            response.cookies.delete('sessionId');
-            return response;
-        }
+    // Get the session from the auth api route
+    const response = await fetch("http://localhost:3000/api/auth", {
+        headers: {
+            cookie: `session=${sessionId}`,
+        },
+    });
 
-        // Check if session is expired
-        if (session.expiresAt && new Date(session.expiresAt) < new Date()) {
-            // Clear expired session cookie and redirect to login
-            const response = NextResponse.redirect(new URL('/login', request.url));
-            response.cookies.delete('sessionId');
-            return response;
-        }
-
-        // Valid session, continue to requested page
-        return NextResponse.next();
-    } catch (error) {
-        console.error('Session verification error:', error);
-        return NextResponse.redirect(new URL('/login', request.url));
+    // If the session is not found, redirect to the login page
+    if (!response.ok) {
+        return NextResponse.redirect("http://localhost:3000/login");
     }
+
+    // Continue to the next middleware
+    return NextResponse.next();
+
 }
 
 // Configure which routes to apply middleware to
@@ -51,6 +41,6 @@ export const config = {
          * - /_next/image (image optimization files)
          * - /favicon.ico (favicon file)
          */
-        '/((?!api/auth|login|_next/static|_next/image|favicon.ico).*)',
+        '/((?!api/auth|login|register|_next/static|_next/image|favicon.ico).*)',
     ],
 };
