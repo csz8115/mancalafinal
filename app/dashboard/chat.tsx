@@ -120,12 +120,11 @@ export default function Chat() {
                 const chat : Chat = {
                     message,
                     createdAt: new Date(),
-                    userId: session?.userId,
-                    username: session?.username
+                    userId: session.session?.userId,
+                    username: session.session?.username
                 }
-                console.log(`session info: ${session?.userId} ${session?.username}`);
                 socket.emit('message', chat);
-                await messageAction(formData);
+                messageAction(formData);
                 }} 
                 className="flex w-full gap-2"
             >
