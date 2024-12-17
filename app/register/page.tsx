@@ -5,7 +5,9 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { register } from "@/app/server-actions/user-actions"; // Import the server action
+import { register } from "@/app/server-actions/user-actions";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import ThemeToggle from "@/components/ui/theme-toggle";
 
 export default function RegisterPage() {
   const [username, setUsername] = useState("");
@@ -25,10 +27,10 @@ export default function RegisterPage() {
     }
 
     try {
-      await register(username, password); // Call server action
+      await register(username, password);
       setSuccess(true);
       setTimeout(() => {
-        router.push("/login"); // Redirect to login page
+        router.push("/login");
       }, 1500);
     } catch (err: any) {
       setError(err.message);
@@ -36,54 +38,66 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
-      <h1 className="text-2xl font-semibold text-center mb-6">Register</h1>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Username"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input
-            id="confirm-password"
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-        {success && <p className="text-green-500 mb-4">Registration successful!</p>}
-        <Button type="submit" className="w-full">
-          Register
-        </Button>
-      </form>
-      <p className="text-center mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:underline">
-            Login here
-          </a>
-        </p>
+    <>
+    <ThemeToggle />
+    <div className="flex h-screen items-center justify-center">
+      <Card className="w-[400px]">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl text-center">Create an account</CardTitle>
+          <CardDescription className="text-center">
+            Enter your details below to create your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirm-password">Confirm Password</Label>
+              <Input
+                id="confirm-password"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm your password"
+                required
+              />
+            </div>
+            {error && <p className="text-sm text-red-500">{error}</p>}
+            {success && <p className="text-sm text-green-500">Registration successful!</p>}
+            <Button type="submit" className="w-full">
+              Register
+            </Button>
+            <div className="text-center text-sm">
+              Already have an account?{" "}
+              <a href="/login" className="text-primary hover:underline">
+                Login here
+              </a>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
     </div>
+    </>
   );
 }

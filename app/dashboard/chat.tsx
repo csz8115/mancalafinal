@@ -16,6 +16,7 @@ import { ChatMessageList } from '@/src/components/ui/chat/chat-message-list';
 import { ChatInput } from '@/src/components/ui/chat/chat-input';
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/utils/use-session";
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 let socket: typeof Socket
 
@@ -73,47 +74,27 @@ export default function Chat() {
         })
     }
 
-    // return (
-    //     <div className="p-4">
-    //         <div className="mb-4 h-64 overflow-y-auto border p-4">
-    //             {messages.map((message, index) => (
-    //                 <div key={index} className="mb-2">
-    //                     {message}
-    //                 </div>
-    //             ))}
-    //         </div>
-    //         <form action={messageAction} className="flex gap-2">
-    //             <input
-    //                 type="text"
-    //                 id="message"
-    //                 name="message"
-    //                 className="flex-1 rounded border p-2"
-    //                 placeholder="Type a message..."
-    //             />
-    //             <SubmitButton />
-    //         </form>
-    //     </div>
-    // )
-
     return (
-        <ExpandableChat size="lg" position="bottom-right">
-            <ExpandableChatHeader className="flex-col text-center justify-center">
-            <h1 className="text-xl font-semibold">Chat Room</h1>
-            </ExpandableChatHeader>
-            <ExpandableChatBody>
-            <ChatMessageList>
-                {messages.map((message, index) => (
-                <ChatBubble key={index} className="flex items-start gap-2">
-                    <ChatBubbleAvatar/>
-                    <ChatBubbleMessage>
-                    <h3 className="font-semibold">{message.username}</h3>
-                    <p>{message.message}</p>
-                    </ChatBubbleMessage>
-                </ChatBubble>
-                ))}
-            </ChatMessageList>
-            </ExpandableChatBody>
-            <ExpandableChatFooter>
+        <>
+            <ScrollArea className="h-[400px] overflow-y-auto mb-4" id="chat-scroll-area">
+                <ChatMessageList>
+                    {messages.map((chat, index) => (
+                    <ChatBubble key={index} className="flex items-start gap-2">
+                        <ChatBubbleAvatar src='https://64.media.tumblr.com/7e8ded3b263d254cac5b00434ea60b40/353f4ef1923113d7-f9/s500x750/6be4c18a40062f0549954b4f049bc11290122aa9.png'/>
+                        <ChatBubbleMessage>
+                        <h3 className="font-semibold">{chat.username}</h3>
+                        <p>{chat.message}</p>
+                        </ChatBubbleMessage>
+                    </ChatBubble>
+                    ))}
+                </ChatMessageList>
+                {/* Add an empty div for scroll anchor */}
+                <div ref={(el) => {
+                    if (el) {
+                        el.scrollIntoView({ behavior: "smooth" });
+                    }
+                }} />
+            </ScrollArea>
             <form 
                 action={async (formData: FormData) => {
                 const message = formData.get('message') as string;
@@ -126,17 +107,17 @@ export default function Chat() {
                 socket.emit('message', chat);
                 messageAction(formData);
                 }} 
-                className="flex w-full gap-2"
+                className="flex w-full items-center gap-2"
             >
                 <ChatInput 
-                name="message"
                 placeholder="Type a message..."
                 />
-                <Button type="submit" size="icon">
-                Send
+                <Button type="submit" size="icon" className="flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11Z"/>
+                    </svg>
                 </Button>
             </form>
-            </ExpandableChatFooter>
-        </ExpandableChat>
+        </>
     )
 }
