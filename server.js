@@ -37,6 +37,25 @@ app.prepare().then(() => {
       // send message to all clients
       io.emit(`message`, data);
     });
+
+    // create a new game in the db
+    socket.on(`newGame`, async (data) => {
+      // send message to all clientsq
+      io.emit(`message`, data);
+    });
+
+    // join a game room
+    socket.on(`joinGame`, async (data) => {
+      // send message to all clients
+      io.emit(`message`, data);
+    });
+
+    // exit a game room
+    socket.on(`exitGame`, async (data) => {
+      // send message to all clients
+      io.emit(`message`, data);
+    });
+
   });
   httpServer
     .once("error", (err) => {
