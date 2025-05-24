@@ -1,10 +1,12 @@
 import Form from 'next/form'
 import { Button } from '@/components/ui/button';
 import { getGames, createGame, joinGame } from '@/app/server-actions/user-actions';
+import { useSearchParams } from 'next/navigation';
 
 
 
 export default function Page() {
+
     return (
         <div className="container mx-auto p-8">
             <h1 className="text-2xl font-bold">Game</h1>

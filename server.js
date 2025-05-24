@@ -40,7 +40,7 @@ app.prepare().then(() => {
 
     // create a new game in the db
     socket.on(`newGame`, async (data) => {
-      // send message to all clientsq
+      // send message to all clients
       io.emit(`message`, data);
     });
 
@@ -50,7 +50,7 @@ app.prepare().then(() => {
       io.emit(`message`, data);
     });
 
-    // exit a game room
+    // exit a game room 
     socket.on(`exitGame`, async (data) => {
       // send message to all clients
       io.emit(`message`, data);

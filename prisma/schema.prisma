@@ -24,7 +24,6 @@ model User {
   gamesWon    Int       @default(0)
   gamesLost   Int       @default(0)
   gamesDrawn  Int       @default(0)
-
   gamesAsPlayer1 Game[]   @relation("Player1")
   gamesAsPlayer2 Game[]   @relation("Player2")
   Session        Session?
@@ -35,7 +34,7 @@ model Game {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   createdAt DateTime  @default(now())
   updatedAt DateTime?
-  board     Int[]     @default([4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0])
+  board     Int[]     @default([0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0])
   status    String    @default("waiting")
   current   String    @default("player1")
   player1   String    @db.ObjectId

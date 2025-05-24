@@ -21,7 +21,7 @@ export default async function Navbar() {
 
 
     return (
-        <nav className="flex justify-between items-center p-4 text-white sticky top-0" style={{ backgroundColor: "#222" }}>
+        <nav className="flex justify-between items-center p-4 text-white sticky top-0 border-b-2 bg-zinc-950">
             <div className="flex items-center">
                 <h1 className="text-2xl font-bold">Mancala</h1>
             </div>

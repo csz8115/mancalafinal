@@ -16,7 +16,7 @@ export default function DashboardLayout({
           <CardDescription>Start a new game of Mancala</CardDescription>
         </CardHeader>
         <CardContent>
-          <Link href="/game">
+          <Link href="/game-form">
             <Button variant="outline" className="w-full">Start New Game</Button>
           </Link>
         </CardContent>

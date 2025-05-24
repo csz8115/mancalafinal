@@ -1,6 +1,6 @@
 export type Game = {
     board: number[][];
-    currentPlayer: number;
+    current: string;
     status: string;
     player1: string;
     player2: string;
