@@ -56,11 +56,35 @@ export default function ChatForm({ session }: { session: Session }) {
                 }
             }}
             action={async (formData: FormData) => {
-                const message = formData.get('message') as string;
+                try {
+                    const message = formData.get('message') as string;
 
-                const result = messageSchema.safeParse({ message });
-                if (!result.success) {
-                    // display error toast
+                    const result = messageSchema.safeParse({ message });
+                    if (!result.success) {
+                        // display error toast
+                        toast({
+                            title: "Message failed to send",
+                            description: "Please try again",
+                            variant: "destructive",
+                        })
+                        return;
+                    }
+
+                    const chatForm = document.getElementById('chat-form') as HTMLFormElement;
+                    chatForm.reset();
+                    const chat: Chat = {
+                        message,
+                        createdAt: new Date(),
+                        userId: session?.userId,
+                        username: session?.username,
+                        url: session?.url
+                    }
+                    socket.emit('message', chat);
+                    messageAction(formData);
+                } catch (error) {
+                    console.log("Error sending message:", error);
+                    console.log("state:", state);
+                    console.error(error);
                     toast({
                         title: "Message failed to send",
                         description: "Please try again",
@@ -68,18 +92,6 @@ export default function ChatForm({ session }: { session: Session }) {
                     })
                     return;
                 }
-
-                const chatForm = document.getElementById('chat-form') as HTMLFormElement;
-                chatForm.reset();
-                const chat: Chat = {
-                    message,
-                    createdAt: new Date(),
-                    userId: session?.userId,
-                    username: session?.username,
-                    url: session?.url
-                }
-                socket.emit('message', chat);
-                messageAction(formData);
             }}
             className="flex w-full items-center gap-2"
         >

@@ -1,8 +1,8 @@
 "use client";
 import { useSession } from "@/hooks/use-session";
-import { getUser } from "../server-actions/user-actions";
+// import { getUser } from "../server-actions/user-actions";
 import { useEffect, useState } from 'react';
-import { User } from "@/types/user-type";
+// import { User } from "@/types/user-type";
 import GameBoard from "@/app/game/game-board";
 import { Game } from "@/types/game-type";
 import socket from "@/app/socket"
@@ -18,20 +18,29 @@ export default function Page() {
                 console.log('Received game:', incomingGame)
                 setGame(incomingGame);
             });
-            socket.emit(`game-next-move`, (updatedGame: Game) => {
+            // socket.emit(`game-next-move`, (updatedGame: Game) => {
 
-            });
+            // });
             
         }
     }
 
-    useEffect(() => {
-        socketInitializer()
-    }, []);
+    try {
+        useEffect(() => {
+            if (session) {
+                socketInitializer();
+            }
+        }
+        , [socketInitializer]);
+    } catch (error) {
+        console.error("Error initializing socket:", error);
+    }
 
 
     return (
+        
         <div className="flex flex-col items-center gap-4 mt-12">
+            {loading && <p>Loading...</p>}
             {game && <GameBoard game={game} />}
         </div>
     );

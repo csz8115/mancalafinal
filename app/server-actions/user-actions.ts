@@ -6,7 +6,7 @@ import { z } from "zod";
 import { redirect } from "next/navigation";
 import { User } from "@/types/user-type";
 
-export async function login(prevState: any, formData: FormData) {
+export async function login(prevState: unknown, formData: FormData) {
     console.log("login action");
     const res = loginSchema.safeParse(Object.fromEntries(formData));
     if (!res.success) {
@@ -39,7 +39,7 @@ export async function logout() {
     redirect("/login");
 }
 
-export async function register(prevState: any, formData: FormData) {
+export async function register(prevState: unknown, formData: FormData) {
     const res = registerSchema.safeParse(Object.fromEntries(formData));
     if (!res.success) {
         return { error: res.error.flatten().fieldErrors };
@@ -59,7 +59,7 @@ export async function register(prevState: any, formData: FormData) {
     await login(prevState, formData);
 }
 
-export async function newMessage(prevState: any, formData: FormData) {
+export async function newMessage(prevState: unknown, formData: FormData) {
     const res = messageSchema.safeParse(Object.fromEntries(formData));
     if (!res.success) {
         return { error: res.error.flatten().fieldErrors };

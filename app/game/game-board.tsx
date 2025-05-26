@@ -1,5 +1,5 @@
 'use client';
-import { useToast } from "@/hooks/use-toast"
+// import { useToast } from "@/hooks/use-toast"
 import Confetti from 'react-confetti'
 import Pit from './pit';
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ type GameBoardProps = {
 
 
 const GameBoard: React.FC<GameBoardProps> = ({game}) => {
-    const { toast } = useToast();
+    // const { toast } = useToast();
 
     const handlePitClick = (row: number, pit: number) => {
         console.log(`Clicked pit ${pit} in row ${row}`);

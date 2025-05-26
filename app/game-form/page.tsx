@@ -1,9 +1,5 @@
-import Form from 'next/form'
 import { Button } from '@/components/ui/button';
-import { getGames, createGame, joinGame } from '@/app/server-actions/user-actions';
-import { useSearchParams } from 'next/navigation';
-
-
+import {  createGame, joinGame } from '@/app/server-actions/user-actions';
 
 export default function Page() {
 

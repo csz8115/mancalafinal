@@ -8,12 +8,13 @@ import { useToast } from "@/hooks/use-toast"
 import { z } from "zod";
 
 export default function LoginComponent() {
-    const [loginState, loginAction] = useActionState(login, undefined);
+    const [loginState] = useActionState(login, undefined);
     const { toast } = useToast()
 
     return (
         <form action={async (formData: FormData) => {
-            const response = await loginAction(formData)
+            try {
+            // const response = await loginAction(formData)
             const login = loginSchema.safeParse(Object.fromEntries(formData));
             if (!login.success) {
                 // parse through the error object and display the error message
@@ -36,6 +37,15 @@ export default function LoginComponent() {
 
                 return;
             }
+        } catch (error) {
+            console.error("Login error:", error);
+            console.log("Login state:", loginState);
+            toast({
+                title: "Login failed",
+                description: "Please try again later.",
+                variant: "destructive",
+            });
+        }
         }} className="space-y-4 rounded-lg border p-6 shadow-md">
             <h1 className="text-2xl font-bold">Login</h1>
 

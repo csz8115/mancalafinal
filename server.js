@@ -22,7 +22,7 @@ app.prepare().then(() => {
       console.log("user disconnected");
     });
     // retrieve messages
-    socket.on(`hello`, async (data) => {
+    socket.on(`hello`, async () => {
       // get all messages from database
       const messages = await prisma.chat.findMany();
 

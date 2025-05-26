@@ -9,9 +9,9 @@ import {
   ToastTitle,
   ToastViewport,
 } from "@/components/ui/toast"
-import { Progress } from "./progress"
-import { useState } from "react"
-import { useEffect } from "react"
+// import { Progress } from "./progress"
+// import { useState } from "react"
+// import { useEffect } from "react"
 
 export function Toaster() {
   const { toasts } = useToast();

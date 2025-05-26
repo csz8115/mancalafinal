@@ -1,9 +1,8 @@
-import { prisma } from "@/utils/prisma";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getSession } from "@/utils/session";
 
 // api route to retrieve session data
-export async function GET(request: NextRequest) {
+export async function GET() {
     const session = await getSession();
 
     if (!session) {

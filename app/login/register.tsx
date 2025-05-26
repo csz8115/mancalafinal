@@ -8,12 +8,13 @@ import { useToast } from "@/hooks/use-toast"
 import { z } from "zod";
 
 export default function LoginComponent() {
-    const [registerState, registerAction] = useActionState(register, undefined);
+    const [registerState] = useActionState(register, undefined);
     const { toast } = useToast();
 
-    return (
-        <form action={async (formData: FormData) => {
-            const response = await registerAction(formData)
+    // This function is called when the form is submitted
+    const handleSubmit = async (formData: FormData) => {
+        try {
+            // const response = await registerAction(formData);
             const register = registerSchema.safeParse(Object.fromEntries(formData));
             if (!register.success) {
                 // parse through the error object and display the error message
@@ -36,9 +37,28 @@ export default function LoginComponent() {
                     document.getElementById('password')?.classList.remove('border-red-500');
                     document.getElementById('confirmPassword')?.classList.remove('border-red-500');
                 }, 5000);
-                
                 return;
             }
+            // Handle successful registration here, e.g., redirect or show a success message
+            toast({
+                title: "Registration successful",
+                description: "You can now log in with your new account.",
+                variant: "default",
+            });
+        } catch (error) {
+            console.error("Registration error:", error);
+            console.log("Registration failed:", registerState);
+            toast({
+                title: "Registration failed",
+                description: "Please try again later.",
+                variant: "destructive",
+            });
+        }
+    };
+
+    return (
+        <form action={async (formData: FormData) => {
+            await handleSubmit(formData);
         }} className="space-y-4 rounded-lg border p-6 shadow-md">
             <h1 className="text-2xl font-bold">Register</h1>
 
