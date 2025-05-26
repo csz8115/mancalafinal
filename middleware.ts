@@ -7,14 +7,14 @@ export async function middleware(request: NextRequest) {
 
     // If the session cookie is not set, redirect to the login page
     if (!session) {
-        return NextResponse.redirect("http://localhost:3000/login");
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 
     // Get the session payload
     const sessionId = session.value;
 
     // Get the session from the auth api route
-    const response = await fetch("http://localhost:3000/api/auth", {
+    const response = await fetch(new URL('/api/auth', request.url).toString(), {
         headers: {
             cookie: `session=${sessionId}`,
         },
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
 
     // If the session is not found, redirect to the login page
     if (!response.ok) {
-        return NextResponse.redirect("http://localhost:3000/login");
+        return NextResponse.redirect(new URL('/login', request.url));
     }
 
     // Continue to the next middleware
