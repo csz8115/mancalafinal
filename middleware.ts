@@ -2,32 +2,25 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-    // Get the session cookie
-    const session = request.cookies.get("session");
+  const sessionToken = request.cookies.get("session")?.value;
 
-    // If the session cookie is not set, redirect to the login page
-    if (!session) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  // Define public routes that don't require a session
+  const publicPaths = ["/login", "/register", "/favicon.ico"];
+  const { pathname } = request.nextUrl;
 
-    // Get the session payload
-    const sessionId = session.value;
-
-    // Get the session from the auth api route
-    const response = await fetch(new URL('/api/auth', request.url).toString(), {
-        headers: {
-            cookie: `session=${sessionId}`,
-        },
-    });
-
-    // If the session is not found, redirect to the login page
-    if (!response.ok) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
-
-    // Continue to the next middleware
+  // Skip check for public paths
+  if (publicPaths.some((path) => pathname.startsWith(path))) {
     return NextResponse.next();
+  }
 
+  // If session cookie is missing, redirect to login
+  if (!sessionToken) {
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  // Otherwise allow through
+  return NextResponse.next();
 }
 
 // Configure which routes to apply middleware to

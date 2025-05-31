@@ -1,7 +1,7 @@
 export type User = {
     id: string;
     username: string;
-    password: string;
+    password?: string;
     createdAt: Date;
     updatedAt?: Date;
     lastLogin?: Date;
@@ -9,4 +9,5 @@ export type User = {
     gamesWon: number;
     gamesLost: number;
     gamesDrawn: number;
+    url?: string; // Optional URL for user profile or avatar
 }

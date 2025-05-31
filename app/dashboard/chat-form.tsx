@@ -2,105 +2,66 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast"
 import { ChatInput } from '@/src/components/ui/chat/chat-input';
 import { Button } from "@/components/ui/button"
-import { newMessage } from '../server-actions/user-actions';
+import { newMessage } from '../../lib/server-actions/user-actions';
 import socket from "@/app/socket"
 import { useActionState } from 'react';
-import { Chat } from "@/types/chat-type"
-import { Session } from "@/types/session-type";
 import { SendHorizonal } from "lucide-react";
+import { useUserStore } from '@/store/userStore';
 import Form from 'next/form'
 
+const messageSchema = z.object({
+    message: z.string().min(1).max(255).trim(),
+});
 
-
-export default function ChatForm({ session }: { session: Session }) {
+export default function ChatForm() {
     const { toast } = useToast();
-    const [state, messageAction] = useActionState(newMessage, undefined);
+    const user = useUserStore((state) => state);
+    const [state, messageAction, pending] = useActionState(newMessage, undefined);
 
-    const messageSchema = z.object({
-        message: z.string().nonempty().min(1).max(255).trim(),
-    });
+    const handleSubmit = async (formData: FormData) => {
+        const message = formData.get('message') as string;
+        // Emit websocket message
+        socket.emit('message', {
+            message,
+            userId: user.id,
+            username: user.username,
+            createdAt: new Date().toISOString(),
+            url: user.url || ''
+        });
+        console.log('Emitted message:', {
+            message,
+            userId: user.id,
+            username: user.username,
+            createdAt: new Date().toISOString(),
+        });
+        // Execute server action
+        messageAction(formData);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            const form = e.currentTarget.form;
+            if (form) {
+                form.requestSubmit();
+            }
+        }
+    };
 
     return (
-        <Form
-            id="chat-form"
-            onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    const form = (e.target as HTMLElement).closest('form') as HTMLFormElement;
-                    const formData = new FormData(form);
-
-                    const message = messageSchema.safeParse(Object.fromEntries(formData));
-                    if (!message.success) {
-                        toast({
-                            title: "Message failed to send",
-                            description: "Please try again",
-                            variant: "destructive",
-                        })
-                        return;
-                    }
-
-                    form.reset();
-                    const chat: Chat = {
-                        message: message.data.message,
-                        createdAt: new Date(),
-                        userId: session?.userId,
-                        username: session?.username,
-                        url: session?.url
-                    }
-                    socket.emit('message', chat);
-                    newMessage("", formData);
-                    toast({
-                        title: "Message sent",
-                        description: "Friday, February 10, 2023 at 5:57 PM",
-                    })
-                }
-            }}
-            action={async (formData: FormData) => {
-                try {
-                    const message = formData.get('message') as string;
-
-                    const result = messageSchema.safeParse({ message });
-                    if (!result.success) {
-                        // display error toast
-                        toast({
-                            title: "Message failed to send",
-                            description: "Please try again",
-                            variant: "destructive",
-                        })
-                        return;
-                    }
-
-                    const chatForm = document.getElementById('chat-form') as HTMLFormElement;
-                    chatForm.reset();
-                    const chat: Chat = {
-                        message,
-                        createdAt: new Date(),
-                        userId: session?.userId,
-                        username: session?.username,
-                        url: session?.url
-                    }
-                    socket.emit('message', chat);
-                    messageAction(formData);
-                } catch (error) {
-                    console.log("Error sending message:", error);
-                    console.log("state:", state);
-                    console.error(error);
-                    toast({
-                        title: "Message failed to send",
-                        description: "Please try again",
-                        variant: "destructive",
-                    })
-                    return;
-                }
-            }}
-            className="flex w-full items-center gap-2"
-        >
+        <Form action={handleSubmit} className="flex w-full items-center gap-2">
+            <input type="hidden" name="userId" value={user.id || ''} />
+            <input type="hidden" name="username" value={user.username || ''} />
+            <input type="hidden" name="url" value={user.url || ''} />
             <ChatInput
                 placeholder="Type a message..."
+                disabled={pending}
+                name="message"
+                onKeyDown={handleKeyDown}
             />
-            <Button type="submit" size="icon" className="flex-shrink-0 h-14">
-                <SendHorizonal className="" />
+            <Button type="submit" size="icon" className="flex-shrink-0 h-14" disabled={pending}>
+                <SendHorizonal />
             </Button>
         </Form>
-    )
+    );
 }

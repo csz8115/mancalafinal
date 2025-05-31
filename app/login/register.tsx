@@ -1,65 +1,43 @@
 "use client";
-import { register } from "@/app/server-actions/user-actions";
+import { register } from "@/lib/server-actions/user-actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SubmitButton from "@/components/ui/submit_btn";
-import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { useActionState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast"
 import { z } from "zod";
 
 export default function LoginComponent() {
-    const [registerState] = useActionState(register, undefined);
+    const [state, action, pending] = useActionState(register, null);
     const { toast } = useToast();
 
-    // This function is called when the form is submitted
-    const handleSubmit = async (formData: FormData) => {
-        try {
-            // const response = await registerAction(formData);
-            const register = registerSchema.safeParse(Object.fromEntries(formData));
-            if (!register.success) {
-                // parse through the error object and display the error message
-                const error = register.error.flatten().fieldErrors;
-                toast({
-                    title: "Error",
-                    description: [error.username, error.password, error.confirmPassword].filter(Boolean).join(" "),
-                    variant: "destructive",
-                });
-                // show a red border around the input field that has the error
-                const usernameError = error.username?.[0];
-                const passwordError = error.password?.[0];
-                const confirmPasswordError = error.confirmPassword?.[0];
-                // Add error class to input fields
-                document.getElementById('username')?.classList.toggle('border-red-500', !!usernameError);
-                document.getElementById('password')?.classList.toggle('border-red-500', !!passwordError);
-                document.getElementById('confirmPassword')?.classList.toggle('border-red-500', !!confirmPasswordError);
-                setTimeout(() => {
-                    document.getElementById('username')?.classList.remove('border-red-500');
-                    document.getElementById('password')?.classList.remove('border-red-500');
-                    document.getElementById('confirmPassword')?.classList.remove('border-red-500');
-                }, 5000);
-                return;
-            }
-            // Handle successful registration here, e.g., redirect or show a success message
-            toast({
-                title: "Registration successful",
-                description: "You can now log in with your new account.",
-                variant: "default",
-            });
-        } catch (error) {
-            console.error("Registration error:", error);
-            console.log("Registration failed:", registerState);
+    useEffect(() => {
+        if (state?.errors) {
             toast({
                 title: "Registration failed",
-                description: "Please try again later.",
+                description: Object.values(state.errors).map(error => (error as string[]).join(", ")).join(" "),
                 variant: "destructive",
             });
+        } else if (state?.success) {
+            toast({
+                title: "Registration successful",
+                description: "You have successfully registered.",
+            });
         }
-    };
+        // clear the glowing effect in sync with the toast notifications 5s 
+        if (state?.errors || state?.success) {
+            setTimeout(() => {
+                const inputs = document.querySelectorAll("input");
+                inputs.forEach(input => {
+                    input.classList.remove("border-red-500", "shadow-[0_0_10px_rgba(239,68,68,0.5)]");
+                });
+            }, 5000);
+        }
+    }, [state, toast]);
 
     return (
-        <form action={async (formData: FormData) => {
-            await handleSubmit(formData);
-        }} className="space-y-4 rounded-lg border p-6 shadow-md">
+        <form action={action}
+            className="space-y-4 rounded-lg border p-6 shadow-md">
             <h1 className="text-2xl font-bold">Register</h1>
 
             <div className="space-y-2">
@@ -69,9 +47,9 @@ export default function LoginComponent() {
                     name="username"
                     type="text"
                     placeholder="Enter your username"
+                    className={state?.errors?.username ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                 />
             </div>
-
             <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -79,9 +57,9 @@ export default function LoginComponent() {
                     name="password"
                     type="password"
                     placeholder="Enter your password"
+                    className={state?.errors?.password ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                 />
             </div>
-
             <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
                 <Input
@@ -89,38 +67,12 @@ export default function LoginComponent() {
                     name="confirmPassword"
                     type="password"
                     placeholder="Confirm your password"
+                    className={state?.errors?.confirmPassword ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                 />
             </div>
-            <SubmitButton />
+            <Button type="submit" disabled={pending} className="w-full">
+                {pending ? "Logging in..." : "Login"}
+            </Button>
         </form>
     );
 }
-
-const registerSchema = z.object({
-    username: z.string()
-    .nonempty("username cannot be blank")
-    .min(4, "Username must be at least 4 Characters")
-    .max(20, "Username cannot exceed 20 Characters")
-    .regex(
-        /^[\x20-\x7E\s]*$/,
-        "Only printable characters are allowed"
-    )
-    .trim(),
-    password: z.string()
-    .nonempty("password cannot be blank")
-    .min(8, "password must be at least 4 Characters")
-    .max(50, "Password cannot exceed 50 Characters")
-    .regex(
-        /^[\x20-\x7E\s]*$/,
-        "Only printable characters are allowed"
-    )
-    .trim(),
-    confirmPassword: z.string()
-    .nonempty("confirm password cannot be blank")
-    .min(8)
-    .max(50)
-    .trim(),
-}).refine(data => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-});

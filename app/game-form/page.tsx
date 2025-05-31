@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {  createGame, joinGame } from '@/app/server-actions/user-actions';
+import {  createGame, joinGame } from '@/lib/server-actions/user-actions';
 
 export default function Page() {
 

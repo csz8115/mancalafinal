@@ -4,12 +4,10 @@ import ChatComponent from "@/app/dashboard/chat"
 import socket from "@/app/socket"
 import { useEffect } from 'react'
 import { useState } from 'react'
-import { useSession } from "@/hooks/use-session";
 import { Chat } from "@/types/chat-type"
 
 export default function Dashboard() {
     const [messages, setMessages] = useState<Chat[]>([]);
-    const { session, loading } = useSession();
 
     async function socketInitializer() {
         socket.on('hello', (incomingMessages: { messages: Chat[] }) => {
@@ -47,7 +45,7 @@ export default function Dashboard() {
         })
 
         socket.emit('hello', { messages: "hello from client" });
-    
+
     }
 
     useEffect(() => {
@@ -55,9 +53,8 @@ export default function Dashboard() {
     }, []);
 
     return (
-            <div className="container mx-auto p-8">
-                { loading && <p>Loading...</p>}
-                { session && <ChatComponent messages={messages} session={session}/>}
-            </div>
+        <div className="container mx-auto p-8">
+            {<ChatComponent messages={messages} />}
+        </div>
     )
 }

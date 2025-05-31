@@ -8,20 +8,22 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatForm from './chat-form';
 import { Chat } from "@/types/chat-type"
 import { Session } from "@/types/session-type";
+import { useUserStore } from '@/store/userStore';
 
 // get session data 
 
-export default function ChatComponent({ messages, session }: { messages: Chat[], session: Session }) {
+export default function ChatComponent({ messages }: { messages: Chat[]}) {
+    const user = useUserStore((state) => state);
 
     return (
         <div>
-            {session && messages && (
+            {messages && (
                 <ScrollArea className="h-[400px] overflow-y-auto mb-4" id="chat-scroll-area">
                     <ChatMessageList>
                         {messages.map((chat, index) => (
-                            <ChatBubble key={index} variant={chat.userId === session?.userId ? 'sent' : 'received'} className="flex items-start gap-1 p-2">
+                            <ChatBubble key={index} variant={chat.userId === user?.id ? 'sent' : 'received'} className="flex items-start gap-1 p-2">
                                 <ChatBubbleAvatar src={chat.url} />
-                                <ChatBubbleMessage variant={chat.userId === session?.userId ? 'sent' : 'received'}>
+                                <ChatBubbleMessage variant={chat.userId === user?.id ? 'sent' : 'received'}>
                                     <h2 className="font-semibold">{chat.username}</h2>
                                     <p>{chat.message}</p>
                                     <time className="text-xs text-gray-500">
@@ -41,7 +43,7 @@ export default function ChatComponent({ messages, session }: { messages: Chat[],
                     }} />
                 </ScrollArea>
             )}
-            <ChatForm session={session} />
+            <ChatForm/>
         </div>
     )
 }

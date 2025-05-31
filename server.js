@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { prisma } from "./utils/prisma.js";
+import { prisma } from "./lib/prisma.js";
 import next from "next";
 
 const dev = process.env.NODE_ENV !== "production";

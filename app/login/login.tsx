@@ -1,54 +1,54 @@
 "use client";
-import { login } from "@/app/server-actions/user-actions";
+
+import { login } from "@/lib/server-actions/user-actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import SubmitButton from "@/components/ui/submit_btn";
-import { useActionState } from "react";
+import { Button } from "@/components/ui/button";
+import { useActionState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast"
-import { z } from "zod";
+import { useRouter } from "next/navigation";
+import { useUserStore } from '@/store/userStore';
+import { set } from "zod";
 
 export default function LoginComponent() {
-    const [loginState] = useActionState(login, undefined);
-    const { toast } = useToast()
+    const router = useRouter();
+    const setUser = useUserStore((s) => s.setUser);
+    const [state, action, pending] = useActionState(login, null);
+    const { toast } = useToast();
 
-    return (
-        <form action={async (formData: FormData) => {
-            try {
-            // const response = await loginAction(formData)
-            const login = loginSchema.safeParse(Object.fromEntries(formData));
-            if (!login.success) {
-                // parse through the error object and display the error message
-                const error = login.error.flatten().fieldErrors;
-                toast({
-                    title: "Error",
-                    description: [error.username, error.password].filter(Boolean).join(" "),
-                    variant: "destructive",
-                });
-                // show a red border around the input field that has the error
-                const usernameError = error.username?.[0];
-                const passwordError = error.password?.[0];
-                // Add error class to input fields
-                document.getElementById('username')?.classList.toggle('border-red-500', !!usernameError);
-                document.getElementById('password')?.classList.toggle('border-red-500', !!passwordError);
-                setTimeout(() => {
-                    document.getElementById('username')?.classList.remove('border-red-500');
-                    document.getElementById('password')?.classList.remove('border-red-500');
-                }, 5000);
-
-                return;
-            }
-        } catch (error) {
-            console.error("Login error:", error);
-            console.log("Login state:", loginState);
+    useEffect(() => {
+        if (state?.errors) {
             toast({
                 title: "Login failed",
-                description: "Please try again later.",
+                description: Object.values(state.errors)
+                    .map((error) =>
+                        Array.isArray(error) ? error.join(", ") : String(error)
+                    )
+                    .join(" "),
                 variant: "destructive",
             });
+        } 
+        // clear the glowing effect in sync with the toast notifications 5s 
+        if (state?.errors || state?.success) {
+            setTimeout(() => {
+                const inputs = document.querySelectorAll("input");
+                inputs.forEach(input => {
+                    input.classList.remove("border-red-500", "shadow-[0_0_10px_rgba(239,68,68,0.5)]");
+                });
+            }, 5000);
         }
-        }} className="space-y-4 rounded-lg border p-6 shadow-md">
-            <h1 className="text-2xl font-bold">Login</h1>
+    }, [state, toast]);
 
+    useEffect(() => {
+        if (state?.success) {
+            setUser(state.user);
+            router.push("/dashboard");
+        }
+    }, [state, setUser, router]);
+
+    return (
+        <form action={action} className="space-y-4 rounded-lg border p-6 shadow-md">
+            <h1 className="text-2xl font-bold">Login</h1>
             <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input
@@ -56,6 +56,7 @@ export default function LoginComponent() {
                     name="username"
                     type="text"
                     placeholder="Enter your username"
+                    className={state?.errors?.username ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                 />
             </div>
             <div className="space-y-2">
@@ -65,23 +66,13 @@ export default function LoginComponent() {
                     name="password"
                     type="password"
                     placeholder="Enter your password"
+                    className={state?.errors?.password ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                 />
             </div>
-            <SubmitButton />
+            <Button type="submit" disabled={pending} className="w-full">
+                {pending ? "Logging in..." : "Login"}
+            </Button>
         </form>
     );
 
 }
-
-const loginSchema = z.object({
-    username: z.string()
-        .nonempty("Username cannot be blank")
-        .min(4, "Username must be at least 4 characters")
-        .max(20, "Username cannot exceed 20 characters")
-        .trim(),
-    password: z.string()
-        .nonempty("Password cannot be blank")
-        .min(8, "Password must be at least 8 characters")
-        .max(50, "Password cannot exceed 50 characters")
-        .trim(),
-});
