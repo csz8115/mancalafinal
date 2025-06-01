@@ -9,39 +9,50 @@ import ChatForm from './chat-form';
 import { Chat } from "@/types/chat-type"
 import { Session } from "@/types/session-type";
 import { useUserStore } from '@/store/userStore';
-
-// get session data 
+import { useEffect, useRef } from 'react';
 
 export default function ChatComponent({ messages }: { messages: Chat[]}) {
     const user = useUserStore((state) => state);
+    const scrollAreaRef = useRef<HTMLDivElement>(null);
+
+    const scrollToBottom = () => {
+        if (scrollAreaRef.current) {
+            const scrollContainer = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
+            if (scrollContainer) {
+                scrollContainer.scrollTo({
+                    top: scrollContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     return (
         <div>
             {messages && (
-                <ScrollArea className="h-[400px] overflow-y-auto mb-4" id="chat-scroll-area">
-                    <ChatMessageList>
-                        {messages.map((chat, index) => (
-                            <ChatBubble key={index} variant={chat.userId === user?.id ? 'sent' : 'received'} className="flex items-start gap-1 p-2">
-                                <ChatBubbleAvatar src={chat.url} />
-                                <ChatBubbleMessage variant={chat.userId === user?.id ? 'sent' : 'received'}>
-                                    <h2 className="font-semibold">{chat.username}</h2>
-                                    <p>{chat.message}</p>
-                                    <time className="text-xs text-gray-500">
-                                    {new Date(chat.createdAt).toDateString() !== new Date().toDateString() ? (
-                                            `${new Date(chat.createdAt).toLocaleDateString()} `
-                                        ) : null}
-                                    {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </time>
-                                </ChatBubbleMessage>
-                            </ChatBubble>
-                        ))}
-                    </ChatMessageList>
-                    <div ref={(el) => {
-                        if (el) {
-                            el.scrollIntoView({ behavior: "smooth" });
-                        }
-                    }} />
-                </ScrollArea>
+            <ScrollArea ref={scrollAreaRef} className="h-[400px] overflow-y-auto mb-4" id="chat-scroll-area">
+                <ChatMessageList>
+                {messages.map((chat, index) => (
+                    <ChatBubble key={index} variant={chat.userId === user?.id ? 'sent' : 'received'} className="flex items-start gap-1 p-2">
+                    <ChatBubbleAvatar src={chat.url} />
+                    <ChatBubbleMessage variant={chat.userId === user?.id ? 'sent' : 'received'}>
+                        <h2 className="font-semibold">{chat.username}</h2>
+                        <p>{chat.message}</p>
+                        <time className="text-xs text-gray-500">
+                        {new Date(chat.createdAt).toDateString() !== new Date().toDateString() ? (
+                            `${new Date(chat.createdAt).toLocaleDateString()} `
+                        ) : null}
+                        {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </time>
+                    </ChatBubbleMessage>
+                    </ChatBubble>
+                ))}
+                </ChatMessageList>
+            </ScrollArea>
             )}
             <ChatForm/>
         </div>

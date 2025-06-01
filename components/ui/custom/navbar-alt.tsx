@@ -18,8 +18,8 @@ export default function Navbar() {
     const clearUser = useUserStore((s) => s.clearUser);
 
     const handleLogout = async () => {
-        await logout();
         clearUser();
+        await logout();
     };
 
     return (
@@ -55,7 +55,7 @@ export default function Navbar() {
                                             <p className="text-sm flex items-center gap-1 text-gray-200">
                                                 <Diamond className="h-3 w-3 text-gray-200" />
                                                 Newbie
-                            Ï                </p>
+                                                Ï                </p>
                                         )}
                                         {user.gamesPlayed != null && user.gamesPlayed >= 1 && user.gamesPlayed < 3 && (
                                             <p className="text-sm flex items-center gap-1 text-green-400">

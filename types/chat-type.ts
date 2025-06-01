@@ -13,6 +13,7 @@ export const ChatSchema = z.object({
         .nonempty("Message cannot be blank")
         .min(1, "Message must be at least 1 character")
         .max(255, "Message cannot exceed 255 characters")
+        .regex(/^[\w\s.,!?'"-]+$/, "Message contains invalid characters")
         .trim(),
     userId: z.string().nonempty("User ID cannot be blank"),
     username: z.string().nonempty("Username cannot be blank"),

@@ -65,6 +65,7 @@ export async function verifySession(): Promise<Session | null> {
 export async function deleteSession() {
     // delete session
     (await cookies()).delete("session");
+    // delete local storage session
 }
 
 async function encrypt(payload: Session) {

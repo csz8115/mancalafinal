@@ -13,6 +13,13 @@ import { useUserStore } from "@/store/userStore";
 
 export default function Navbar() {
     const user = useUserStore((state) => state);
+    const clearUser = useUserStore((s) => s.clearUser);
+
+
+    const handleLogout = async () => {
+        clearUser();
+        await logout();
+    };
 
     return (
         <nav className="flex justify-between items-center p-4 text-white sticky top-0 border-b-2 bg-zinc-950">
@@ -71,7 +78,7 @@ export default function Navbar() {
                 )}
 
                 <div>
-                    <Button onClick={logout}>Logout</Button>
+                    <Button onClick={handleLogout}>Logout</Button>
                 </div>
                 <div>
                     <ThemeToggle />
