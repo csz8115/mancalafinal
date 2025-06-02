@@ -1,24 +1,24 @@
 import { Button } from '@/components/ui/button';
-import {  createGame, joinGame } from '@/lib/server-actions/user-actions';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import CreateGameComponent from './createGame';
+import JoinGameComponent from './joinGame';
 
 export default function Page() {
 
     return (
-        <div className="container mx-auto p-8">
-            <h1 className="text-2xl font-bold">Game</h1>
-            <div className="flex flex-col space-y-4"></div>
-                <Button
-                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={createGame}
-                >
-                    Create New Game
-                </Button>
-                <Button
-                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-                    onClick={joinGame}
-                >
-                    Join Existing Game
-                </Button>
-            </div>
+        <div className="container mx-auto p-8 flex justify-center">
+            <Tabs defaultValue="create" className="w-full max-w-2xl">
+                <TabsList className="flex space-x-2">
+                    <TabsTrigger value="create">Create Game</TabsTrigger>
+                    <TabsTrigger value="join">Join Game</TabsTrigger>
+                </TabsList>
+                <TabsContent value="create">
+                    <CreateGameComponent />
+                </TabsContent>
+                <TabsContent value="join">
+                    <JoinGameComponent />
+                </TabsContent>
+            </Tabs>
+        </div>
     );
 }

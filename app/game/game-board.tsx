@@ -4,83 +4,204 @@ import Confetti from 'react-confetti'
 import Pit from './pit';
 import { Button } from "@/components/ui/button";
 import { Game } from "@/types/game-type";
+import { useState, useEffect } from 'react';
+import wood from '@/src/img/wood.jpg';
+import { useSearchParams } from 'next/navigation';
+import { useUserStore } from '@/store/userStore';
+import socket from "@/app/socket"
 
-type GameBoardProps = {
-    game: Game;
-};
 
+export default function GameBoard() {
+    const [game, setGame] = useState<any>({
+    });
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [socketInitialized, setSocketInitialized] = useState(false);
+    const user = useUserStore((state) => state);
+    const searchParams = useSearchParams();
 
-const GameBoard: React.FC<GameBoardProps> = ({game}) => {
-    // const { toast } = useToast();
+async function socketInitializer() {
+    const isNewGame = searchParams.get('createGame');
+    const lobbyName = searchParams.get('lobbyName'); // used in both cases
+    const userId = user.id;
 
-    const handlePitClick = (row: number, pit: number) => {
-        console.log(`Clicked pit ${pit} in row ${row}`);
+    if (!lobbyName || !userId) {
+        console.error('Missing lobbyName or user ID');
+        return;
+    }
+
+    if (socketInitialized) {
+        return; // Prevent duplicate initialization
+    }
+
+    setSocketInitialized(true);
+
+    if (isNewGame) {
+        console.log('Creating new game:', lobbyName);
+        socket.emit('create-room', lobbyName);
+    } else {
+        console.log('Joining existing game:', lobbyName);
+        socket.emit('join-room', lobbyName, userId);
+    }
+
+    // Socket listeners
+    socket.on('game-start', (gameData: Game) => {
+        console.log('Game started:', gameData);
+        setGame(gameData);
+    });
+
+    socket.on('game-update', (gameData: Game) => {
+        console.log('Game updated:', gameData);
+        setGame(gameData);
+    });
+
+    socket.on('game-over', (gameData: Game) => {
+        console.log('Game over:', gameData);
+        setGame(gameData);
+        setShowConfetti(true);
+    });
+
+    socket.on('rooms-list', (rooms: any) => {
+        console.log('Available rooms:', rooms);
+        // Optional: store or display rooms in UI
+    });
+
+    socket.on('error', (err : any) => {
+        console.error('Socket error:', err);
+    });
+}
+
+    const handlePitClick = (pitIndex: number) => {
+        console.log(`Pit ${pitIndex} clicked by Player ${game.current}`);
+
+        if (game.gameOver) return;
+        
+        // Check if it's the current user's turn
+        const isPlayer1Turn = game.current === 'player1' && game.player1 === user.id;
+        const isPlayer2Turn = game.current === 'player2' && game.player2 === user.id;
+        
+        if (!isPlayer1Turn && !isPlayer2Turn) {
+            console.log('Not your turn!');
+            return;
+        }
+        
+        // Emit move to server instead of handling locally
+        const lobbyName = searchParams.get('lobbyName');
+        if (lobbyName) {
+            socket.emit('player-move', {
+                lobbyName,
+                game,
+                pitIndex,
+            });
+        }
     };
 
-    return (
-        <>
-            <svg className="absolute w-[900px] h-[320px] -z-10" preserveAspectRatio="xMidYMid meet">
-                <defs>
-                    <pattern id="wood" patternUnits="userSpaceOnUse" width="100%" height="100%">
-                        <image href="https://www.textures4photoshop.com/tex/thumbs/free-wood-texture-with-high-resolution-thumb38.jpg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" />
-                    </pattern>
-                </defs>
-                <rect x="0" y="20" width="900" height="300" rx="50"
-                    fill="url(#wood)" opacity="0.5" />
-            </svg>
-            <div className="flex items-center justify-center gap-4 mt-14">
-                {game.status == "complete" && <Confetti
-                    width={window.innerWidth}
-                    height={window.innerHeight}
-                    recycle={false}
-                    numberOfPieces={200}
-                    tweenDuration={2500}
-                />}
-                <Button style={{
-                    width: '80px',
-                    height: '200px',
-                    border: '2px solid',
-                    borderColor: game.current == "Player2" ? '#2196f3' : '#333',
-                }}
-                    variant="outline"
-                    disabled={true}>
-                    {game.board[0][0]}
-                </Button>
-                <div className="flex flex-col gap-4">
-                    <div className="flex gap-2">
-                        {game.board[1].map((stones, index) => (
-                            <Pit
-                                key={`2-${index}`}
-                                stones={stones}
-                                onClick={() => handlePitClick(1, index)}
-                                disabled={game.current !== "Player1"}
-                            />
-                        ))}
-                    </div>
-                    <div className="flex gap-2">
-                        {game.board[2].map((stones, index) => (
-                            <Pit
-                                key={`1-${index}`}
-                                stones={stones}
-                                onClick={() => handlePitClick(2, index)}
-                                disabled={game.current !== "Player1"}
-                            />
-                        ))}
-                    </div>
-                </div>
-                <Button style={{
-                    width: '80px',
-                    height: '200px',
-                    border: '2px solid #333',
-                    borderColor: game.current == "Player1" ? '#2196f3' : '#333',
-                }}
-                    variant="outline"
-                    disabled={true}>
-                    {game.board[3][0]}
-                </Button>
-            </div>
-        </>
-    );
-};
+    useEffect(() => {
+        // Only initialize socket when required data is available
+        if (user.id && searchParams.get('lobbyName') && !socketInitialized) {
+            socketInitializer();
+        }
+    }, [user.id, searchParams, socketInitialized]);
 
-export default GameBoard;
+    return (
+        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
+            {showConfetti && <Confetti />}
+            
+            {game.status === 'waiting' ? (
+                <div className="text-center">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-4">Mancala</h1>
+                    <p className="text-lg text-gray-600">Waiting for another player to join...</p>
+                </div>
+            ) : (
+                <>
+                    <div className="text-center mb-6">
+                        <p className="text-lg font-semibold text-gray-800 mt-2">
+                            Current Turn: {game.current}
+                        </p>
+                    </div>
+
+                    {/* Rectangular wood-textured board background */}
+                    <div className="relative mx-auto w-fit" style={{
+                        backgroundImage: `url(${wood.src ?? wood})`,
+                        backgroundSize: 'cover',
+                        borderRadius: '20px',
+                        border: '8px solid #654321',
+                        boxShadow: 'inset 0 0 20px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)',
+                    }}>
+                        <div className="flex items-stretch justify-center p-8">
+                            {/* Player 2's Store (left side) */}
+                            <div className="mr-8 flex items-center">
+                                <Pit
+                                    stones={game.board?.[13] ?? 0}
+                                    onClick={() => { }}
+                                    disabled={true}
+                                />
+                            </div>
+
+                            {/* Game board pits */}
+                            <div className="flex flex-col justify-center">
+                                {/* Player 2's pits (top row) */}
+                                <div className="flex justify-center items-center mb-4">
+                                    <div className="flex space-x-4">
+                                        {Array.from({ length: 6 }, (_, index) => {
+                                            const pitIndex = 12 - index;
+                                            const stones = game.board?.[pitIndex] ?? 0;
+                                            const isPlayer2Turn = game.current === 'player2' && game.player2 === user.id;
+                                            return (
+                                                <Pit
+                                                    key={`pit-${pitIndex}`}
+                                                    stones={stones}
+                                                    onClick={() => handlePitClick(pitIndex)}
+                                                    disabled={!isPlayer2Turn || game.gameOver}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+
+                                {/* Player 1's pits (bottom row) */}
+                                <div className="flex justify-center items-center">
+                                    <div className="flex space-x-4">
+                                        {Array.from({ length: 6 }, (_, index) => {
+                                            const pitIndex = index;
+                                            const stones = game.board?.[pitIndex] ?? 0;
+                                            const isPlayer1Turn = game.current === 'player1' && game.player1 === user.id;
+                                            return (
+                                                <Pit
+                                                    key={`pit-${pitIndex}`}
+                                                    stones={stones}
+                                                    onClick={() => handlePitClick(pitIndex)}
+                                                    disabled={!isPlayer1Turn || game.gameOver}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Player 1's Store (right side) */}
+                            <div className="ml-8 flex items-center">
+                                <Pit
+                                    stones={game.board?.[6] ?? 0}
+                                    onClick={() => { }}
+                                    disabled={true}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {game.gameOver && (
+                        <div className="text-center mt-6">
+                            <h2 className="text-2xl font-bold mb-4">
+                                {game.winner ? `Player ${game.winner} Wins!` : "It's a Tie!"}
+                            </h2>
+                            <Button onClick={() => window.location.reload()}>
+                                New Game
+                            </Button>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
+    );
+}
+

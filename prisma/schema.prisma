@@ -13,6 +13,18 @@ datasource db {
   url      = env("DB_URL")
 }
 
+enum Status {
+  waiting
+  inProgress
+  complete
+}
+
+enum Current {
+  player1
+  player2
+  bot
+}
+
 model User {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   username    String    @unique
@@ -32,16 +44,18 @@ model User {
 
 model Game {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  lobbyName String    @unique
   createdAt DateTime  @default(now())
   updatedAt DateTime?
-  board     Int[]     @default([0, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0])
-  status    String    @default("waiting")
-  current   String    @default("player1")
+  board     Int[]     @default([4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0])  
+  status    Status    @default(waiting)
+  current   Current   @default(player1)
   player1   String    @db.ObjectId
-  player2   String    @db.ObjectId
+  player2   String?   @db.ObjectId
+  winner    String    @default("")
 
   player1User User @relation("Player1", fields: [player1], references: [id])
-  player2User User @relation("Player2", fields: [player2], references: [id])
+  player2User User? @relation("Player2", fields: [player2], references: [id])
 }
 
 model Chat {
