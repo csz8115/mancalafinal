@@ -44,20 +44,24 @@ async function socketInitializer() {
     }
 
     // Socket listeners
-    socket.on('game-start', (gameData: Game) => {
+    socket.on('game-start', (gameData: any) => {
         console.log('Game started:', gameData);
         setGame(gameData);
     });
 
-    socket.on('game-update', (gameData: Game) => {
+    socket.on('game-update', (gameData: any) => {
         console.log('Game updated:', gameData);
         setGame(gameData);
     });
 
-    socket.on('game-over', (gameData: Game) => {
+    socket.on('game-over', (gameData: any) => {
         console.log('Game over:', gameData);
         setGame(gameData);
-        setShowConfetti(true);
+        // show confetti if user is the winner
+        if (gameData.winner === user.id) {
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
+        }
     });
 
     socket.on('rooms-list', (rooms: any) => {
@@ -103,18 +107,17 @@ async function socketInitializer() {
     }, [user.id, searchParams, socketInitialized]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-8">
+        <div className="min-h-screen p-8">
             {showConfetti && <Confetti />}
             
-            {game.status === 'waiting' ? (
+            {game.status === 'waiting' || Object.keys(game).length === 0 ? (
                 <div className="text-center">
-                    <h1 className="text-3xl font-bold text-gray-800 mb-4">Mancala</h1>
                     <p className="text-lg text-gray-600">Waiting for another player to join...</p>
                 </div>
             ) : (
                 <>
                     <div className="text-center mb-6">
-                        <p className="text-lg font-semibold text-gray-800 mt-2">
+                        <p className="text-lg font-semibold mt-2">
                             Current Turn: {game.current}
                         </p>
                     </div>
