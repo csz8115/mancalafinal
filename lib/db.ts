@@ -35,6 +35,23 @@ async function createUser(username: string, password: string) {
     return null;
 }
 
+async function updateUserLastLogin(userId: string) {
+    try {
+        const user = await prisma.user.update({
+            where: {
+                id: userId,
+            },
+            data: {
+                lastLogin: new Date(),
+            },
+        });
+        return user;
+    } catch (error) {
+        logger.error('Error updating user last login:', error);
+    }
+    return null;
+}
+
 async function createGame(player1ID: string, lobbyName: string) {
     try {
         const game = await prisma.game.create({
@@ -80,6 +97,10 @@ async function getGameByLobbyName(lobbyName: string) {
         const game = await prisma.game.findUnique({
             where: {
                 lobbyName: lobbyName,
+            },
+            include: {
+                player1User: true,
+                player2User: true,
             },
         });
         return game;
@@ -166,6 +187,7 @@ const db = {
     createMessage,
     getMessages,
     createUser,
+    updateUserLastLogin,
     joinGame,
 };
 

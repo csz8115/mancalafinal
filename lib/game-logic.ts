@@ -40,10 +40,17 @@ export const checkGameOver = (board: any) => {
     const player2Side = board.slice(7, 13).reduce((sum: any, s: any) => sum + s, 0);
 
     if (player1Side === 0 || player2Side === 0) {
+        // Add remaining seeds to respective stores
         board[6] += player1Side;
         board[13] += player2Side;
-        board.fill(0, 0, 6);
-        board.fill(0, 7, 13);
+        
+        // Clear the pits (but not the stores)
+        for (let i = 0; i < 6; i++) {
+            board[i] = 0;
+        }
+        for (let i = 7; i < 13; i++) {
+            board[i] = 0;
+        }
 
         if (board[6] > board[13]) return "player1";
         if (board[13] > board[6]) return "player2";

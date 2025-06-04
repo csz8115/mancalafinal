@@ -9,6 +9,8 @@ import wood from '@/src/img/wood.jpg';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import socket from "@/app/socket"
+import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 export default function GameBoard() {
@@ -18,76 +20,108 @@ export default function GameBoard() {
     const [socketInitialized, setSocketInitialized] = useState(false);
     const user = useUserStore((state) => state);
     const searchParams = useSearchParams();
+    const { toast } = useToast();
+    const router = useRouter();
 
-async function socketInitializer() {
-    const isNewGame = searchParams.get('createGame');
-    const lobbyName = searchParams.get('lobbyName'); // used in both cases
-    const userId = user.id;
+    async function socketInitializer() {
+        const isNewGame = searchParams.get('createGame');
+        const lobbyName = searchParams.get('lobbyName'); // used in both cases
+        const userId = user.id;
 
-    if (!lobbyName || !userId) {
-        console.error('Missing lobbyName or user ID');
-        return;
-    }
+        if (!lobbyName || !userId) {
+            console.error('Missing lobbyName or user ID');
+            return;
+        }
 
-    if (socketInitialized) {
-        return; // Prevent duplicate initialization
-    }
+        if (socketInitialized) {
+            return; // Prevent duplicate initialization
+        }
 
-    setSocketInitialized(true);
+        setSocketInitialized(true);
 
-    if (isNewGame) {
-        console.log('Creating new game:', lobbyName);
-        socket.emit('create-room', lobbyName);
-    } else {
-        console.log('Joining existing game:', lobbyName);
-        socket.emit('join-room', lobbyName, userId);
-    }
+        if (isNewGame) {
+            console.log('Creating new game:', lobbyName);
+            socket.emit('create-room', lobbyName);
+        } else {
+            console.log('Joining existing game:', lobbyName);
+            socket.emit('join-room', lobbyName, userId);
+        }
 
-    // Socket listeners
-    socket.on('game-start', (gameData: any) => {
-        console.log('Game started:', gameData);
-        setGame(gameData);
-    });
+        // Socket listeners
+        socket.on('game-start', (gameData: any) => {
+            console.log('Game started:', gameData);
+            setGame(gameData);
+        });
 
-    socket.on('game-update', (gameData: any) => {
-        console.log('Game updated:', gameData);
-        setGame(gameData);
-    });
+        socket.on('game-update', (gameData: any) => {
+            console.log('Game updated:', gameData);
+            setGame(gameData);
+            // Check if it is the current user's turn
+            const isPlayer1Turn = gameData.current === 'player1' && gameData.player1 === user.id;
+            const isPlayer2Turn = gameData.current === 'player2' && gameData.player2 === user.id;
+            if (isPlayer1Turn || isPlayer2Turn) {
+                toast({
+                    title: 'Your turn!',
+                    description: `It's your turn, ${user.username}.`,
+                });
+            }
+        });
 
-    socket.on('game-over', (gameData: any) => {
-        console.log('Game over:', gameData);
-        setGame(gameData);
-        // show confetti if user is the winner
-        if (gameData.winner === user.id) {
+        socket.on('game-over', (gameData: any) => {
+            console.log('Game over:', gameData);
+            setGame(gameData);
+            // show confetti if user is the winner
+            if (gameData.winner) {
+            toast({
+                title: 'Game Over',
+                description: gameData.winner === user.id ? 'You win!' : 'You lose!',
+            });
+            } else {
+            toast({
+                title: 'Game Over',
+                description: "It's a tie!",
+            });
+            }   
+            if (gameData.winner === user.id) {
             setShowConfetti(true);
             setTimeout(() => setShowConfetti(false), 5000); // Hide confetti after 5 seconds
-        }
-    });
+            }
+            
+            // Redirect to dashboard after 5 seconds
+            setTimeout(() => {
+            // check if the user is player1 or player2
+            user.id === gameData.player1 ?
+                user.setUser(gameData.player1User) :
+                user.setUser(gameData.player2User);
+            router.push('/dashboard');
+            }, 5000);
 
-    socket.on('rooms-list', (rooms: any) => {
-        console.log('Available rooms:', rooms);
-        // Optional: store or display rooms in UI
-    });
+        });
 
-    socket.on('error', (err : any) => {
-        console.error('Socket error:', err);
-    });
-}
+        socket.on('rooms-list', (rooms: any) => {
+            console.log('Available rooms:', rooms);
+            // Optional: store or display rooms in UI
+        });
+
+        socket.on('error', (err: any) => {
+            console.error('Socket error:', err);
+        });
+    }
 
     const handlePitClick = (pitIndex: number) => {
         console.log(`Pit ${pitIndex} clicked by Player ${game.current}`);
 
         if (game.gameOver) return;
-        
+
         // Check if it's the current user's turn
         const isPlayer1Turn = game.current === 'player1' && game.player1 === user.id;
         const isPlayer2Turn = game.current === 'player2' && game.player2 === user.id;
-        
+
         if (!isPlayer1Turn && !isPlayer2Turn) {
             console.log('Not your turn!');
             return;
         }
-        
+
         // Emit move to server instead of handling locally
         const lobbyName = searchParams.get('lobbyName');
         if (lobbyName) {
@@ -109,18 +143,13 @@ async function socketInitializer() {
     return (
         <div className="min-h-screen p-8">
             {showConfetti && <Confetti />}
-            
+
             {game.status === 'waiting' || Object.keys(game).length === 0 ? (
                 <div className="text-center">
                     <p className="text-lg text-gray-600">Waiting for another player to join...</p>
                 </div>
             ) : (
                 <>
-                    <div className="text-center mb-6">
-                        <p className="text-lg font-semibold mt-2">
-                            Current Turn: {game.current}
-                        </p>
-                    </div>
 
                     {/* Rectangular wood-textured board background */}
                     <div className="relative mx-auto w-fit" style={{
@@ -130,14 +159,17 @@ async function socketInitializer() {
                         border: '8px solid #654321',
                         boxShadow: 'inset 0 0 20px rgba(0,0,0,0.3), 0 8px 16px rgba(0,0,0,0.2)',
                     }}>
-                        <div className="flex items-stretch justify-center p-8">
+                        <div className="flex items-center justify-center p-8">
                             {/* Player 2's Store (left side) */}
-                            <div className="mr-8 flex items-center">
+                            <div className="mr-8 flex flex-col items-center">
                                 <Pit
                                     stones={game.board?.[13] ?? 0}
                                     onClick={() => { }}
                                     disabled={true}
                                 />
+                                <div className="mt-2 text-sm font-semibold">
+                                    {game.board?.[13] ?? 0}
+                                </div>
                             </div>
 
                             {/* Game board pits */}
@@ -182,12 +214,15 @@ async function socketInitializer() {
                             </div>
 
                             {/* Player 1's Store (right side) */}
-                            <div className="ml-8 flex items-center">
+                            <div className="ml-8 flex flex-col items-center">
                                 <Pit
                                     stones={game.board?.[6] ?? 0}
                                     onClick={() => { }}
                                     disabled={true}
                                 />
+                                <div className="mt-2 text-sm font-semibold">
+                                    {game.board?.[6] ?? 0}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -107,14 +107,21 @@ app
           const lastPit = distributeSeeds(board, pitIndex, isPlayer1Turn);
           handleCapture(board, lastPit, isPlayer1Turn);
           const winner = checkGameOver(board);
-          const winnerId = winner === "player1" ? game.player1ID : winner === "player2" ? game.player2ID : "";
+          logger.info(`Player ${currentPlayer} moved from pit ${pitIndex}. Last pit: ${lastPit}, Winner: ${winner}`);
+          let winnerId = "";
+          if (winner) {
+            winnerId = winner === "player1" ? game.player1 : winner === "player2" ? game.player2 : winner === "tie" ? "tie" : "";
+          }
           const nextPlayer = getNextPlayer(lastPit, isPlayer1Turn, currentPlayer);
+          const gameStatus = winner ? "complete" : "inProgress";
 
-          const updatedGame = await db.gameMove(lobbyName, board, nextPlayer, winnerId || "", winner ? "complete" : "inProgress");
+          const updatedGame = await db.gameMove(lobbyName, board, nextPlayer, winnerId, gameStatus);
           io.to(lobbyName).emit(`game-update`, updatedGame);
 
-          if (updatedGame && updatedGame.winner) {
-            io.to(lobbyName).emit(`game-over`, updatedGame);
+          if (gameStatus === "complete") {
+            logger.info(`Game over in room ${lobbyName}. Winner: ${winnerId}`);
+            const CompletedGame = await db.getGameByLobbyName(lobbyName)
+            io.to(lobbyName).emit(`game-over`, CompletedGame);
           }
         } catch (error) {
           logger.error("Error processing player move:", error);

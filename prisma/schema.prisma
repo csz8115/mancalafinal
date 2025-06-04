@@ -30,7 +30,6 @@ model User {
   username    String    @unique
   password    String
   createdAt   DateTime  @default(now())
-  updatedAt   DateTime?
   lastLogin   DateTime?
   url         String?
   gamesPlayed Int       @default(0)

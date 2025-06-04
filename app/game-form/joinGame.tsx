@@ -11,9 +11,17 @@ export default function JoinGame() {
     const [rooms, setRooms] = useState<any[]>([]);
     const [loadingRooms, setLoadingRooms] = useState(true);
 
-    // Fetch available rooms on mount
+    // Fetch available rooms on mount and every 3 seconds
     useEffect(() => {
-        socket.emit('get-rooms');
+        const fetchRooms = () => {
+            socket.emit('get-rooms');
+        };
+
+        // Initial fetch
+        fetchRooms();
+
+        // Set up interval to refetch every 3 seconds
+        const interval = setInterval(fetchRooms, 3000);
 
         socket.on('rooms-list', (roomsList) => {
             setRooms(roomsList);
@@ -22,6 +30,7 @@ export default function JoinGame() {
 
         return () => {
             socket.off('rooms-list');
+            clearInterval(interval);
         };
     }, []);
 

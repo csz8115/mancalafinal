@@ -57,6 +57,7 @@ export default function CreateGameComponent() {
                             <RadioGroupItem 
                                 value="Singleplayer" 
                                 id="singleplayer" 
+                                disabled={true} // Disable singleplayer option
                                 className={showErrors && state?.errors?.gameMode ? "border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]" : ""}
                             />
                             <Label htmlFor="singleplayer">Singleplayer</Label>

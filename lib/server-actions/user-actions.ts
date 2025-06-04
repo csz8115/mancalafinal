@@ -31,6 +31,7 @@ export async function login(_prevState: LoginState, formData: FormData): Promise
     }
 
     await createSession(user.id, user.username);
+    await db.updateUserLastLogin(user.id);
     // redirect to the home page
     return { success: true, user: user };
 }

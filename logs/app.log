@@ -154,3 +154,132 @@
 {"level":50,"time":1748965047253,"pid":39524,"hostname":"Mac.lan","msg":"Error creating message:"}
 {"level":50,"time":1748965047253,"pid":39524,"hostname":"Mac.lan","msg":"Error creating message:"}
 {"level":50,"time":1748965047254,"pid":39524,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749001232547,"pid":27430,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052556085,"pid":6964,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749052556189,"pid":6964,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052556239,"pid":6964,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052556240,"pid":6964,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052556240,"pid":6964,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052556241,"pid":6964,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052556241,"pid":6964,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052556241,"pid":6964,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052556241,"pid":6964,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052556242,"pid":6964,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052556242,"pid":6964,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749052556243,"pid":6964,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749052556243,"pid":6964,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052556243,"pid":6964,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052556243,"pid":6964,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052556243,"pid":6964,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052556244,"pid":6964,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052556244,"pid":6964,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052556244,"pid":6964,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052556245,"pid":6964,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052556245,"pid":6964,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749052708852,"pid":7577,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749052708958,"pid":7577,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052709009,"pid":7577,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052709010,"pid":7577,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052709010,"pid":7577,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052709011,"pid":7577,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052709011,"pid":7577,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052709011,"pid":7577,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052709011,"pid":7577,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052709012,"pid":7577,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052709012,"pid":7577,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749052709014,"pid":7577,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749052709015,"pid":7577,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052709015,"pid":7577,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052709015,"pid":7577,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052709015,"pid":7577,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052709016,"pid":7577,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052709016,"pid":7577,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052709016,"pid":7577,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052709016,"pid":7577,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052709016,"pid":7577,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749052836352,"pid":8150,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749052836460,"pid":8150,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052836511,"pid":8150,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749052836512,"pid":8150,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052836512,"pid":8150,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052836513,"pid":8150,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749052836513,"pid":8150,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052836513,"pid":8150,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052836513,"pid":8150,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052836514,"pid":8150,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749052836514,"pid":8150,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749052836515,"pid":8150,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749052836515,"pid":8150,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052836515,"pid":8150,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052836516,"pid":8150,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052836516,"pid":8150,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749052836517,"pid":8150,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052836517,"pid":8150,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052836517,"pid":8150,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052836517,"pid":8150,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749052836518,"pid":8150,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749052861808,"pid":8356,"hostname":"Mac.lan","msg":"Server error:"}
+{"level":50,"time":1749064432624,"pid":20222,"hostname":"Mac.lan","msg":"Server error:"}
+{"level":50,"time":1749064536104,"pid":20838,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749064536213,"pid":20838,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749064536262,"pid":20838,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749064536263,"pid":20838,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749064536264,"pid":20838,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749064536264,"pid":20838,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749064536265,"pid":20838,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749064536265,"pid":20838,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749064536265,"pid":20838,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749064536266,"pid":20838,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749064536266,"pid":20838,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749064536267,"pid":20838,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749064536267,"pid":20838,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749064536267,"pid":20838,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749064536267,"pid":20838,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749064536268,"pid":20838,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749064536269,"pid":20838,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749064536269,"pid":20838,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749064536270,"pid":20838,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749064536270,"pid":20838,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749064536270,"pid":20838,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749073095708,"pid":41461,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749073095815,"pid":41461,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749073095865,"pid":41461,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749073095867,"pid":41461,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073095867,"pid":41461,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073095867,"pid":41461,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073095868,"pid":41461,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073095868,"pid":41461,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073095868,"pid":41461,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073095869,"pid":41461,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073095869,"pid":41461,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749073095870,"pid":41461,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749073095870,"pid":41461,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073095870,"pid":41461,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073095870,"pid":41461,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073095870,"pid":41461,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073095877,"pid":41461,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073095878,"pid":41461,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073095878,"pid":41461,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073095878,"pid":41461,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073095879,"pid":41461,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749073225923,"pid":41832,"hostname":"Mac.lan","msg":"Error fetching user erroruser:"}
+{"level":50,"time":1749073226030,"pid":41832,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749073226080,"pid":41832,"hostname":"Mac.lan","msg":"Error creating user:"}
+{"level":50,"time":1749073226080,"pid":41832,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073226081,"pid":41832,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073226081,"pid":41832,"hostname":"Mac.lan","msg":"Error creating game:"}
+{"level":50,"time":1749073226082,"pid":41832,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073226082,"pid":41832,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073226082,"pid":41832,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073226083,"pid":41832,"hostname":"Mac.lan","msg":"Error joining game:"}
+{"level":50,"time":1749073226083,"pid":41832,"hostname":"Mac.lan","msg":"Error fetching game by lobby name:"}
+{"level":50,"time":1749073226084,"pid":41832,"hostname":"Mac.lan","msg":"Error fetching available games:"}
+{"level":50,"time":1749073226084,"pid":41832,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073226084,"pid":41832,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073226084,"pid":41832,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073226084,"pid":41832,"hostname":"Mac.lan","msg":"Error updating game move:"}
+{"level":50,"time":1749073226085,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
+{"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error fetching messages:"}

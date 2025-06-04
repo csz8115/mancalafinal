@@ -408,6 +408,36 @@ it('should return null if invalid move when updating state', async () => {
     }));
 });
 
+it('should update the game status to complete and set the winner running the middleware', async () => {
+    const mockGame = {
+        id: 'game1',
+        lobbyName: 'testLobby',
+        board: [4, 4, 4, 4, 4, 4, 0, 4, 4, 4, 4, 4, 4, 0],
+        current: 'player1',
+        winner: 'player1',
+        status: 'complete',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        player1ID: 'player1',
+        player2ID: 'player2',
+    };
+    (prisma.game.update as jest.MockedFunction<any>).mockResolvedValue(mockGame);
+    const updatedGame = await db.gameMove('testLobby', mockGame.board, 'player2', 'player1', 'complete');
+    expect(updatedGame).not.toBeNull();
+    expect(updatedGame!.status).toBe('complete');
+    expect(updatedGame!.winner).toBe('player1');
+    expect(prisma.game.update).toHaveBeenCalledWith(expect.objectContaining({
+        where: expect.objectContaining({
+            lobbyName: 'testLobby',
+        }),
+        data: expect.objectContaining({
+            status: 'complete',
+            winner: 'player1',
+        }),
+    }));
+});
+
+
 it('should create a message in the chat', async () => {
     const mockMessage = {
         id: 'msg1',

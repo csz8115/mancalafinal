@@ -8,6 +8,7 @@ type UserStore = {
     username: string | null;
     createdAt?: Date | null;
     updatedAt?: Date | null;
+    lastLogin?: Date | null;
     gamesPlayed?: number | null;
     gamesWon?: number | null;
     gamesLost?: number | null;
@@ -34,6 +35,7 @@ export const useUserStore = create<UserStore>()(
                 username: user.username,
                 createdAt: user.createdAt,
                 updatedAt: user.updatedAt,
+                lastLogin: user.lastLogin,
                 gamesPlayed: user.gamesPlayed,
                 gamesWon: user.gamesWon,
                 gamesLost: user.gamesLost,
@@ -45,6 +47,7 @@ export const useUserStore = create<UserStore>()(
                 username: null,
                 createdAt: null,
                 updatedAt: null,
+                lastLogin: null,
                 gamesPlayed: null,
                 gamesWon: null,
                 gamesLost: null,
