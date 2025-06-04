@@ -9,13 +9,16 @@ import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import socket from "@/app/socket"
 import { useToast } from '@/hooks/use-toast';
-import { Game } from '@prisma/client';
+import { Game, User, Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
+type GamewithPlayers = Game & {
+    player1User: User;
+    player2User: User;
+};
 
 export default function GameBoard() {
-    const [game, setGame] = useState<any>({
-    });
+    const [game, setGame] = useState<Game>({} as Game); // Initialize with an empty game object
     const [showConfetti, setShowConfetti] = useState(false);
     const [socketInitialized, setSocketInitialized] = useState(false);
     const user = useUserStore((state) => state);
@@ -67,7 +70,7 @@ export default function GameBoard() {
             }
         });
 
-        socket.on('game-over', (gameData: any) => {
+        socket.on('game-over', (gameData: GamewithPlayers) => {
             console.log('Game over:', gameData);
             setGame(gameData);
             // show confetti if user is the winner
@@ -111,7 +114,7 @@ export default function GameBoard() {
     const handlePitClick = (pitIndex: number) => {
         console.log(`Pit ${pitIndex} clicked by Player ${game.current}`);
 
-        if (game.gameOver) return;
+        if (game.status === Status.complete ) return;
 
         // Check if it's the current user's turn
         const isPlayer1Turn = game.current === 'player1' && game.player1 === user.id;
@@ -186,7 +189,7 @@ export default function GameBoard() {
                                                     key={`pit-${pitIndex}`}
                                                     stones={stones}
                                                     onClick={() => handlePitClick(pitIndex)}
-                                                    disabled={!isPlayer2Turn || game.gameOver}
+                                                    disabled={!isPlayer2Turn || game.status === Status.complete}
                                                 />
                                             );
                                         })}
@@ -205,7 +208,7 @@ export default function GameBoard() {
                                                     key={`pit-${pitIndex}`}
                                                     stones={stones}
                                                     onClick={() => handlePitClick(pitIndex)}
-                                                    disabled={!isPlayer1Turn || game.gameOver}
+                                                    disabled={!isPlayer1Turn || game.status === Status.complete}
                                                 />
                                             );
                                         })}
