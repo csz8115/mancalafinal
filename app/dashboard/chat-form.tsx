@@ -1,10 +1,9 @@
-import { z } from "zod";
 import { useToast } from "@/hooks/use-toast"
 import { ChatInput } from '@/src/components/ui/chat/chat-input';
 import { Button } from "@/components/ui/button"
 import { newMessage } from '../../lib/server-actions/user-actions';
 import socket from "@/app/socket"
-import { useActionState, useState } from 'react';
+import { useActionState } from 'react';
 import { SendHorizonal } from "lucide-react";
 import { useUserStore } from '@/store/userStore';
 import Form from 'next/form'
@@ -52,6 +51,7 @@ export default function ChatForm() {
             if (form) {
                 form.requestSubmit();
             }
+            console.log(state)
         }
     };
 

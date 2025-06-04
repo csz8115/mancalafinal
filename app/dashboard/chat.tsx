@@ -7,7 +7,6 @@ import { ChatMessageList } from '@/src/components/ui/chat/chat-message-list';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import ChatForm from './chat-form';
 import { Chat } from "@/types/chat-type"
-import { Session } from "@/types/session-type";
 import { useUserStore } from '@/store/userStore';
 import { useEffect, useRef } from 'react';
 

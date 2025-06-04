@@ -3,13 +3,13 @@
 import Confetti from 'react-confetti'
 import Pit from './pit';
 import { Button } from "@/components/ui/button";
-import { Game } from "@/types/game-type";
 import { useState, useEffect } from 'react';
 import wood from '@/src/img/wood.jpg';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import socket from "@/app/socket"
 import { useToast } from '@/hooks/use-toast';
+import { Game } from '@prisma/client';
 import { useRouter } from 'next/navigation';
 
 
@@ -48,12 +48,12 @@ export default function GameBoard() {
         }
 
         // Socket listeners
-        socket.on('game-start', (gameData: any) => {
+        socket.on('game-start', (gameData: Game) => {
             console.log('Game started:', gameData);
             setGame(gameData);
         });
 
-        socket.on('game-update', (gameData: any) => {
+        socket.on('game-update', (gameData: Game) => {
             console.log('Game updated:', gameData);
             setGame(gameData);
             // Check if it is the current user's turn
