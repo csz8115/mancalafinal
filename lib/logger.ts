@@ -8,15 +8,16 @@ const prettyStream = pretty({
     levelFirst: true,
 });
 
-const logDir = path.join(process.cwd(), "logs");
-if (!fs.existsSync(logDir)) {
-    fs.mkdirSync(logDir, { recursive: true });
+const streams: Array<{ stream: any; level?: string }> = [{ stream: prettyStream }];
+
+// Only add file stream in non-production environments
+if (process.env.NODE_ENV !== "production") {
+    const logDir = path.join(process.cwd(), "logs");
+    if (!fs.existsSync(logDir)) {
+        fs.mkdirSync(logDir, { recursive: true });
+    }
+    const fileStream = fs.createWriteStream(path.join(logDir, "app.log"), { flags: "a" });
+    streams.push({ stream: fileStream, level: "error" });
 }
-const fileStream = fs.createWriteStream(path.join(logDir, "app.log"), { flags: "a" });
-export const logger = pino(
-    {},
-    multistream([
-        { stream: prettyStream },      // Console (pretty)
-        { stream: fileStream, level: "error" },        // File (errors only)
-    ])
-);
+
+export const logger = pino({}, multistream(streams));
