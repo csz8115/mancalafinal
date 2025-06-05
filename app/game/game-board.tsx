@@ -4,7 +4,6 @@ import Confetti from 'react-confetti'
 import Pit from './pit';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
-import wood from '@/src/img/wood.jpg';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import socket from "@/app/socket"
@@ -153,7 +152,7 @@ export default function GameBoard() {
 
                     {/* Rectangular wood-textured board background */}
                     <div className="relative mx-auto w-fit" style={{
-                        backgroundImage: `url(${wood.src ?? wood})`,
+                        backgroundImage: `url(https://t4.ftcdn.net/jpg/02/28/68/07/360_F_228680721_gGbh5ylrMPMikdBIzWb8N1yGBLg8dmu9.jpg)`,
                         backgroundSize: 'cover',
                         borderRadius: '20px',
                         border: '8px solid #654321',
