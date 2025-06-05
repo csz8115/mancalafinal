@@ -8,6 +8,10 @@ const prettyStream = pretty({
     levelFirst: true,
 });
 
+const logDir = "logs";
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+}
 const fileStream = fs.createWriteStream("logs/app.log", { flags: "a" });
 export const logger = pino(
     {},
