@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { User } from "@prisma/client";
 
 export const LoginSchema = z.object({
   username: z.string()
@@ -14,10 +15,13 @@ export const LoginSchema = z.object({
 });
 
 export type LoginState = | {
+  user?: User;
+  
   errors?: {
     username?: string[]
     password?: string[]
   }
   message?: string
+  success?: boolean
 }
   | undefined

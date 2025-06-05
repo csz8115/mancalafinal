@@ -1,7 +1,7 @@
-import { PrismaClient, Status } from '@prisma/client';
+import { PrismaClient, Status, User } from '@prisma/client';
 import { logger } from './logger';
 
-const basePrisma = new PrismaClient();
+export const basePrisma = new PrismaClient();
 
 export const prisma = basePrisma.$extends({
     name: 'GameStatusUpdate',
@@ -15,7 +15,7 @@ export const prisma = basePrisma.$extends({
                         const { player1, player2, winner } = result;
                         const tie = winner === 'tie';
 
-                        const updates: Promise<any>[] = [];
+                        const updates: Promise<User>[] = [];
 
                         if (player1) {
                             updates.push(

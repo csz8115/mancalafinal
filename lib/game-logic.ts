@@ -1,11 +1,13 @@
-export const isValidMove = (pitIndex: any, board: any, isPlayer1Turn: any) => {
+import { Current } from "@prisma/client";
+
+export const isValidMove = (pitIndex: number, board: number[], isPlayer1Turn: boolean): boolean => {
     if (pitIndex < 0 || pitIndex > 13 || pitIndex === 6 || pitIndex === 13) return false;
     if (isPlayer1Turn && (pitIndex < 0 || pitIndex > 5)) return false;
     if (!isPlayer1Turn && (pitIndex < 7 || pitIndex > 12)) return false;
     return board[pitIndex] !== 0;
 };
 
-export const distributeSeeds = (board: any, pitIndex: any, isPlayer1Turn: any) => {
+export const distributeSeeds = (board: number[], pitIndex: number, isPlayer1Turn: boolean): number => {
     let seeds = board[pitIndex];
     board[pitIndex] = 0;
     let currentPit = pitIndex;
@@ -21,7 +23,7 @@ export const distributeSeeds = (board: any, pitIndex: any, isPlayer1Turn: any) =
     return currentPit;
 };
 
-export const handleCapture = (board: any, lastPit: any, isPlayer1Turn: any) => {
+export const handleCapture = (board: number[], lastPit: number, isPlayer1Turn: boolean): void => {
     const isOwnSide = isPlayer1Turn
         ? lastPit >= 0 && lastPit <= 5
         : lastPit >= 7 && lastPit <= 12;
@@ -35,9 +37,9 @@ export const handleCapture = (board: any, lastPit: any, isPlayer1Turn: any) => {
     }
 };
 
-export const checkGameOver = (board: any) => {
-    const player1Side = board.slice(0, 6).reduce((sum: any, s: any) => sum + s, 0);
-    const player2Side = board.slice(7, 13).reduce((sum: any, s: any) => sum + s, 0);
+export const checkGameOver = (board: number[]): string => {
+    const player1Side = board.slice(0, 6).reduce((sum: number, s: number) => sum + s, 0);
+    const player2Side = board.slice(7, 13).reduce((sum: number, s: number) => sum + s, 0);
 
     if (player1Side === 0 || player2Side === 0) {
         // Add remaining seeds to respective stores
@@ -59,7 +61,7 @@ export const checkGameOver = (board: any) => {
     return "";
 };
 
-export const getNextPlayer = (lastPit: any, isPlayer1Turn: any, currentPlayer: any) => {
+export const getNextPlayer = (lastPit: number, isPlayer1Turn: boolean, currentPlayer: Current): Current => {
     const landedInOwnStore = (lastPit === 6 && isPlayer1Turn) || (lastPit === 13 && !isPlayer1Turn);
     if (landedInOwnStore) return currentPlayer;
     return isPlayer1Turn ? "player2" : "player1";

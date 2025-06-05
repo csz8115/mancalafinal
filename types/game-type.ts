@@ -31,4 +31,6 @@ export type GameFormState = {
         lobbyName?: string[];
         gameMode?: string[];
     };
+    message?: string
+    sucess?: boolean;
 } | undefined;

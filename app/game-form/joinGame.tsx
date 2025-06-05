@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import socket from '@/app/socket';
 import { joinGame } from '@/lib/server-actions/user-actions';
+import { Game } from '@prisma/client';
 
 export default function JoinGame() {
-    const router = useRouter();
-    const [rooms, setRooms] = useState<any[]>([]);
+    const [rooms, setRooms] = useState<Game[]>([]);
     const [loadingRooms, setLoadingRooms] = useState(true);
 
     // Fetch available rooms on mount and every 3 seconds
@@ -23,7 +22,7 @@ export default function JoinGame() {
         // Set up interval to refetch every 3 seconds
         const interval = setInterval(fetchRooms, 3000);
 
-        socket.on('rooms-list', (roomsList) => {
+        socket.on('rooms-list', (roomsList: Game[]) => {
             setRooms(roomsList);
             setLoadingRooms(false);
         });

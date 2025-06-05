@@ -93,20 +93,17 @@ export default function GameBoard() {
             // Redirect to dashboard after 5 seconds
             setTimeout(() => {
             // check if the user is player1 or player2
-            user.id === gameData.player1 ?
-                user.setUser(gameData.player1User) :
+            if (user.id === gameData.player1) {
+                user.setUser(gameData.player1User);
+            } else {
                 user.setUser(gameData.player2User);
+            }
             router.push('/dashboard');
             }, 5000);
 
         });
 
-        socket.on('rooms-list', (rooms: any) => {
-            console.log('Available rooms:', rooms);
-            // Optional: store or display rooms in UI
-        });
-
-        socket.on('error', (err: any) => {
+        socket.on('error', (err: Error) => {
             console.error('Socket error:', err);
         });
     }
@@ -230,7 +227,7 @@ export default function GameBoard() {
                         </div>
                     </div>
 
-                    {game.gameOver && (
+                    {game.status === Status.complete && (
                         <div className="text-center mt-6">
                             <h2 className="text-2xl font-bold mb-4">
                                 {game.winner ? `Player ${game.winner} Wins!` : "It's a Tie!"}

@@ -1,5 +1,4 @@
 import { User } from '@prisma/client';
-import { url } from 'inspector';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -24,7 +23,6 @@ export const useUserStore = create<UserStore>()(
             id: null,
             username: null,
             createdAt: null,
-            updatedAt: null,
             gamesPlayed: null,
             gamesWon: null,
             gamesLost: null,
@@ -34,7 +32,6 @@ export const useUserStore = create<UserStore>()(
                 id: user.id,
                 username: user.username,
                 createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
                 lastLogin: user.lastLogin,
                 gamesPlayed: user.gamesPlayed,
                 gamesWon: user.gamesWon,
@@ -46,7 +43,6 @@ export const useUserStore = create<UserStore>()(
                 id: null,
                 username: null,
                 createdAt: null,
-                updatedAt: null,
                 lastLogin: null,
                 gamesPlayed: null,
                 gamesWon: null,

@@ -42,10 +42,10 @@ export default function ChatComponent({ messages }: { messages: Chat[]}) {
                         <h2 className="font-semibold">{chat.username}</h2>
                         <p>{chat.message}</p>
                         <time className="text-xs text-gray-500">
-                        {new Date(chat.createdAt).toDateString() !== new Date().toDateString() ? (
+                        {chat.createdAt && new Date(chat.createdAt).toDateString() !== new Date().toDateString() ? (
                             `${new Date(chat.createdAt).toLocaleDateString()} `
                         ) : null}
-                        {new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        {chat.createdAt && new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </time>
                     </ChatBubbleMessage>
                     </ChatBubble>

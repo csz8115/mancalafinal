@@ -5,15 +5,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Button } from "@/components/ui/button";
 import { useActionState, useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast"
-import { useRouter } from "next/navigation";
-import { useUserStore } from '@/store/userStore';
 import { createGame } from "@/lib/server-actions/user-actions";
 
 
 export default function CreateGameComponent() {
-    const router = useRouter();
-    const setUser = useUserStore((s) => s.setUser);
-    const [state, action, pending] = useActionState(createGame, null);
+    const [state, action, pending] = useActionState(createGame, {});
     const { toast } = useToast();
     const [showErrors, setShowErrors] = useState(false);
 

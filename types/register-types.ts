@@ -27,5 +27,6 @@ export type RegisterState = | {
     confirmPassword?: string[]
   }
   message?: string
+  success?: boolean
 }
   | undefined;

@@ -5,10 +5,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useActionState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast"
-import { z } from "zod";
 
 export default function LoginComponent() {
-    const [state, action, pending] = useActionState(register, null);
+    const [state, action, pending] = useActionState(register, undefined);
     const { toast } = useToast();
 
     useEffect(() => {

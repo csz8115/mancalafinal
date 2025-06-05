@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma, basePrisma } from "@/lib/prisma";
 import { User, Status, Current } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { logger } from "./logger";
@@ -37,7 +37,7 @@ async function createUser(username: string, password: string) {
 
 async function updateUserLastLogin(userId: string) {
     try {
-        const user = await prisma.user.update({
+        const user = await basePrisma.user.update({
             where: {
                 id: userId,
             },
