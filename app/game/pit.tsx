@@ -69,7 +69,7 @@ const Pit = ({ stones, onClick, disabled }: PitProps) => {
         <Button
             className="relative w-20 h-20 rounded-lg border border-amber-400 shadow-md flex items-center justify-center overflow-hidden active:brightness-75"
             style={{
-            backgroundImage: `url(public/wood.jpg)`,
+            backgroundImage: `url(https://plus.unsplash.com/premium_photo-1675782999354-2f2711e437a5?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'brightness(3.3) contrast(0.8)',
