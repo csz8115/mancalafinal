@@ -283,3 +283,4 @@
 {"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
 {"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error creating message:"}
 {"level":50,"time":1749073226086,"pid":41832,"hostname":"Mac.lan","msg":"Error fetching messages:"}
+{"level":50,"time":1749164356931,"pid":80172,"hostname":"Mac.lan","msg":"Server error:"}
