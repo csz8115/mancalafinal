@@ -10,7 +10,7 @@ import socket from "@/app/socket"
 import { useToast } from '@/hooks/use-toast';
 import { Game, User, Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import wood from "@/assets/wood.png";
+import wood from "@/src/img/wood.png";
 
 type GamewithPlayers = Game & {
     player1User: User;
