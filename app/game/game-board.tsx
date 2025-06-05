@@ -10,6 +10,7 @@ import socket from "@/app/socket"
 import { useToast } from '@/hooks/use-toast';
 import { Game, User, Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
+import wood from "@/assets/wood.png";
 
 type GamewithPlayers = Game & {
     player1User: User;
@@ -58,15 +59,6 @@ export default function GameBoard() {
         socket.on('game-update', (gameData: Game) => {
             console.log('Game updated:', gameData);
             setGame(gameData);
-            // Check if it is the current user's turn
-            const isPlayer1Turn = gameData.current === 'player1' && gameData.player1 === user.id;
-            const isPlayer2Turn = gameData.current === 'player2' && gameData.player2 === user.id;
-            if (isPlayer1Turn || isPlayer2Turn) {
-                toast({
-                    title: 'Your turn!',
-                    description: `It's your turn, ${user.username}.`,
-                });
-            }
         });
 
         socket.on('game-over', (gameData: GamewithPlayers) => {
@@ -152,7 +144,7 @@ export default function GameBoard() {
 
                     {/* Rectangular wood-textured board background */}
                     <div className="relative mx-auto w-fit" style={{
-                        backgroundImage: `url(https://t4.ftcdn.net/jpg/02/28/68/07/360_F_228680721_gGbh5ylrMPMikdBIzWb8N1yGBLg8dmu9.jpg)`,
+                        backgroundImage: `url(${wood.src})`,
                         backgroundSize: 'cover',
                         borderRadius: '20px',
                         border: '8px solid #654321',
@@ -229,11 +221,11 @@ export default function GameBoard() {
                     {game.status === Status.complete && (
                         <div className="text-center mt-6">
                             <h2 className="text-2xl font-bold mb-4">
-                                {game.winner ? `Player ${game.winner} Wins!` : "It's a Tie!"}
+                                {(() => {
+                                    if (!game.winner) return "It's a Tie!";
+                                    return game.winner === user.id ? "You Win!" : "You Lose!";
+                                })()}
                             </h2>
-                            <Button onClick={() => window.location.reload()}>
-                                New Game
-                            </Button>
                         </div>
                     )}
                 </>

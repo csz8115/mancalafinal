@@ -2,6 +2,7 @@ import { PitProps } from "@/types/pit-type";
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
+import wood from "@/assets/wood.png";
 
 type Marble = { id: string; isDropping: boolean };
 
@@ -69,7 +70,7 @@ const Pit = ({ stones, onClick, disabled }: PitProps) => {
         <Button
             className="relative w-20 h-20 rounded-lg border border-amber-400 shadow-md flex items-center justify-center overflow-hidden active:brightness-75"
             style={{
-            backgroundImage: `url(https://t4.ftcdn.net/jpg/02/28/68/07/360_F_228680721_gGbh5ylrMPMikdBIzWb8N1yGBLg8dmu9.jpg)`,
+            backgroundImage: `url(${wood.src})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             filter: 'brightness(3.3) contrast(0.8)',

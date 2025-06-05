@@ -21,7 +21,7 @@ export default function UserCard(user: Readonly<User>) {
             <CardContent>
                 <CardDescription>
                     <div className="space-y-3 text-lg">
-                        <p className="font-medium">Last Login: {user.lastLogin?.toLocaleDateString()}</p>
+                        <p className="font-medium">Last Login: {user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}</p>
                         <p className="font-medium">Games Played: {user.gamesPlayed}</p>
                         <p className="font-medium">Games Won: {user.gamesWon}</p>
                         <p className="font-medium">Games Lost: {user.gamesLost}</p>
