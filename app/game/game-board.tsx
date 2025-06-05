@@ -4,7 +4,7 @@ import Confetti from 'react-confetti'
 import Pit from './pit';
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
-import wood from '../../src/img/wood.jpg';
+import wood from '@/src/img/wood.jpg';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import socket from "@/app/socket"

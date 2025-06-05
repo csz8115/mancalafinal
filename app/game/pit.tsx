@@ -2,7 +2,7 @@ import { PitProps } from "@/types/pit-type";
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
-import wood from '../../src/img/wood.jpg';
+import wood from '@/src/img/wood.jpg';
 
 type Marble = { id: string; isDropping: boolean };
 
