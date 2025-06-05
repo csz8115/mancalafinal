@@ -1,18 +1,18 @@
-import pino from "pino";
+import pino, { multistream } from "pino";
 import pretty from "pino-pretty";
 import fs from "fs";
-import { multistream } from "pino";
+import path from "path";
 
 const prettyStream = pretty({
     colorize: true,
     levelFirst: true,
 });
 
-const logDir = "logs";
+const logDir = path.join(process.cwd(), "logs");
 if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
 }
-const fileStream = fs.createWriteStream("logs/app.log", { flags: "a" });
+const fileStream = fs.createWriteStream(path.join(logDir, "app.log"), { flags: "a" });
 export const logger = pino(
     {},
     multistream([
