@@ -8,7 +8,7 @@ const prettyStream = pretty({
     levelFirst: true,
 });
 
-const streams: Array<{ stream: any; level?: string }> = [{ stream: prettyStream }];
+const streams: Array<{ stream: NodeJS.WritableStream; level?: string }> = [{ stream: prettyStream }];
 
 // Only add file stream in non-production environments
 if (process.env.NODE_ENV !== "production") {
