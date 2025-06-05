@@ -18,7 +18,6 @@ describe('Database functions', () => {
             password: 'hashed',
             url: 'https://avatar.com/testuser',
             createdAt: new Date(),
-            updatedAt: new Date(),
             lastLogin: null,
             gamesPlayed: 0,
             gamesWon: 0,
