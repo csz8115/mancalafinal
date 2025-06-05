@@ -2,7 +2,6 @@
 // import { useToast } from "@/hooks/use-toast"
 import Confetti from 'react-confetti'
 import Pit from './pit';
-import { Button } from "@/components/ui/button";
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
@@ -10,7 +9,6 @@ import socket from "@/app/socket"
 import { useToast } from '@/hooks/use-toast';
 import { Game, User, Status } from '@prisma/client';
 import { useRouter } from 'next/navigation';
-import wood from "@/public/wood.png";
 
 type GamewithPlayers = Game & {
     player1User: User;
@@ -144,7 +142,7 @@ export default function GameBoard() {
 
                     {/* Rectangular wood-textured board background */}
                     <div className="relative mx-auto w-fit" style={{
-                        backgroundImage: `url(${wood.src})`,
+                        backgroundImage: `url(public/wood.jpg)`,
                         backgroundSize: 'cover',
                         borderRadius: '20px',
                         border: '8px solid #654321',
