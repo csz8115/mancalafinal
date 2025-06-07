@@ -11,3 +11,20 @@ This is a real-time multiplayer **Mancala** game built with [Next.js](https://ne
 You can try the live production version here:  
 🔗 [https://mancala-three.vercel.app/login](https://mancala-three.vercel.app/login)
 
+## Brief Description 
+
+This application was built using Nextjs, MongoDB, MongoDB Atlas Cloud services, and Prisma as a ORM for MongoDB. I deployed the application in two parts, the Nextjs application is hosted on vercel, whereas the socket server is hosted on render. This is due to the limitations associated with vercel hosting and the edge functionalities used by the Nextjs framework. Users can create a new account, login to the site, access a real time messaging feature created with web sockets. Additionally players can play multiplayer mancala with real time socket updates and real time user statistic updates upon game completion.
+
+## Tech Stack 
+
+### Frameworks
+NextJS
+Socket.io 
+TailwindCSS
+Typescript 
+MongoDB 
+PrismaORM
+
+### Deployment
+Vercel
+Render
