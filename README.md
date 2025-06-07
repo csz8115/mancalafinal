@@ -18,13 +18,13 @@ This application was built using Nextjs, MongoDB, MongoDB Atlas Cloud services, 
 ## Tech Stack 
 
 ### Frameworks
-NextJS
-Socket.io 
-TailwindCSS
-Typescript 
-MongoDB 
-PrismaORM
+- NextJS
+- Socket.io 
+- TailwindCSS
+- Typescript 
+- MongoDB 
+- PrismaORM
 
 ### Deployment
-Vercel
-Render
+- Vercel
+- Render
