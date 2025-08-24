@@ -62,6 +62,7 @@ if (result.status === Status.complete) {
   });
   // ...updates player2 accordingly
 }
+```
 
 ![Mancala ERD](./src/img/mancala_erd.png)
 
