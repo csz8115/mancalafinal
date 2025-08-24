@@ -6,8 +6,7 @@ This is a real-time multiplayer **Mancala** game built with [Next.js](https://ne
 
 ## 🚀 Getting Started
 
-You can try the live production version here:  
-🔗 [https://mancala-three.vercel.app/login](https://mancala-three.vercel.app/login)
+You can try the live production version [here](https://mancala-three.vercel.app/login)
 
 ## Overview
 
