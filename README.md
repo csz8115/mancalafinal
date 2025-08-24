@@ -4,7 +4,7 @@ This is a real-time multiplayer **Mancala** game built with [Next.js](https://ne
 
 > **Note**: The WebSocket server is hosted separately. You can find its repository here: [mancalaSocket](https://github.com/csz8115/mancalaSocket)
 
-## 🚀 Getting Started
+## Getting Started
 
 You can try the live production version [here](https://mancala-three.vercel.app/login)
 
@@ -75,7 +75,6 @@ Each event is validated on the server, persisted to the database, and broadcaste
 - **makeMove** → Validates player moves, updates board state, persists to MongoDB, and broadcasts the new state.  
 - **gameOver** → Records the winner, updates user stats, and closes the session.  
 - **sendMessage** → Handles real-time chat between players within the lobby.  
-- **updateStats** → Triggers after game completion to update `gamesPlayed`, `gamesWon`, `gamesLost`, etc.  
 
 ## Frontend Showcase
 
