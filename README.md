@@ -11,20 +11,85 @@ This is a real-time multiplayer **Mancala** game built with [Next.js](https://ne
 You can try the live production version here:  
 🔗 [https://mancala-three.vercel.app/login](https://mancala-three.vercel.app/login)
 
-## Brief Description 
+## Overview
 
-This application was built using Nextjs, MongoDB, MongoDB Atlas Cloud services, and Prisma as a ORM for MongoDB. I deployed the application in two parts, the Nextjs application is hosted on vercel, whereas the socket server is hosted on render. This is due to the limitations associated with vercel hosting and the edge functionalities used by the Nextjs framework. Users can create a new account, login to the site, access a real time messaging feature created with web sockets. Additionally players can play multiplayer mancala with real time socket updates and real time user statistic updates upon game completion.
+This is a fullstack application with an emphasis on real time systems and scalable system architecture.
+The application has a split deployment on vercerl and render.
+-Frontend & API Layer (Next.js on Vercel): Handles authentication, and session management.
+-WebSocket Server (Render): Powers live gameplay and chat features using Socket.IO, overcoming edge-function limitations of Vercel hosting.
+-Data Layer (MongoDB Atlas + Prisma ORM): Provides a high availability, cloud database for user accounts, game history, and real-time statistics, with Prisma and Zod ensuring type-safe queries and schema management.
 
 ## Tech Stack 
 
-### Frameworks
-- NextJS
-- Socket.io 
-- TailwindCSS
-- Typescript 
-- MongoDB 
-- PrismaORM
+### Frameworks & Core Libaries
+- NextJS (React, Typescript, Hooks)
+- Socket.io (Real-Time Communication)
+- Prisma ORM (MongoDB Schema & Queries)
+- TailwindCSS & ShadCN (UI)
+
+### Databases
+- MongoDB Atlas (cloud database)
+- Redis (Caching and active session tracking)
 
 ### Deployment
-- Vercel
-- Render
+- Vercel (NextJS app deployment)
+- Render (Socket.io app deployment)
+
+## Database Structure
+
+This system uses Prisma ORM to build a schema defining schemas and relationships.
+
+### Models
+
+User → Authentication details, stats, and session info.
+Game → Stores game states, results, and timestamps.
+Chat → Stores real-time chat messages.
+
+erDiagram
+    USER ||--o{ GAME : "as player1"
+    USER ||--o{ GAME : "as player2"
+    USER ||--o{ CHAT : "writes"
+    GAME o|--o{ CHAT : "messages (optional link)"
+
+    USER {
+      ObjectId id PK
+      string   username  "unique"
+      string   password
+      datetime createdAt
+      datetime lastLogin  "nullable"
+      string   url        "nullable"
+      int      gamesPlayed
+      int      gamesWon
+      int      gamesLost
+      int      gamesDrawn
+    }
+
+    GAME {
+      ObjectId id PK
+      string   lobbyName  "unique"
+      datetime createdAt
+      datetime updatedAt  "nullable"
+      int[]    board      "default [4,4,4,4,4,4,0,4,4,4,4,4,4,0]"
+      enum     status     "waiting|inProgress|complete"
+      enum     current    "player1|player2|bot"
+      ObjectId player1 FK
+      ObjectId player2 FK "nullable"
+      string   winner     "empty if none"
+    }
+
+    CHAT {
+      ObjectId id PK
+      string   username
+      datetime createdAt
+      datetime updatedAt  "nullable"
+      string   message
+      ObjectId userId FK
+      ObjectId game      "nullable (no Prisma relation)"
+      string   url
+    }
+
+
+### Redis Usage
+
+- Tracks active user sessions for reports
+
