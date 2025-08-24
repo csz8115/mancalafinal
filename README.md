@@ -40,8 +40,60 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 
 ### Models
 
--User → Authentication details, stats, and session info.
--Game → Stores game states, results, and timestamps.
--Chat → Stores real-time chat messages.
+- User → Authentication details, stats, and session info.
+- Game → Stores game states, results, and timestamps.
+- Chat → Stores real-time chat messages.
 
 ![Mancala ERD](./src/img/mancala_erd.png)
+
+## Frontend Showcase
+
+- Login/Register Page
+
+- Dashboard
+
+- Game Lobby 
+
+- Game Board
+
+- Player Profile
+
+- Player Stats
+
+## Testing
+
+This project includes a comprehensive testing suite including Unit, Integration, and API level testing
+- Unit Tests: Validate game logic, board state transitions, and helper functions.
+- Integration Tests: Simulate player actions across WebSocket events and ensure consistent game outcomes.
+- API Tests: Validate authentication, game creation, and stat updates using Jest + Supertest.
+
+### Running Tests
+
+```bash
+# Run all Jest tests
+npm run test
+
+# Run with coverage report
+npm run test:coverage
+
+# Run integration tests only
+npm run test:integration
+
+```
+
+Test files live in the test directory 
+__tests__/
+  ├── unit/
+  │   ├── db.tests.ts
+  │   └── game-logic.tests.ts
+  │   └── session.tests.ts
+  │   └── user-actions.tests.ts
+  │   └── utils.tests.ts
+  
+## Future Improvements
+
+- Single Player mode with minimax algorithm
+- Friends list and matchmaking.
+- Analytics dashboard for win/loss trends.
+- Dockerized deployment for containerized scaling.
+
