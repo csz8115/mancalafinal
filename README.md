@@ -82,13 +82,15 @@ npm run test:integration
 ```
 
 Test files live in the test directory 
-__tests__/
+```text
+tests/
   ├── unit/
   │   ├── db.tests.ts
-  │   └── game-logic.tests.ts
-  │   └── session.tests.ts
-  │   └── user-actions.tests.ts
+  │   ├── game-logic.tests.ts
+  │   ├── session.tests.ts
+  │   ├── user-actions.tests.ts
   │   └── utils.tests.ts
+```
   
 ## Future Improvements
 
