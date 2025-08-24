@@ -15,9 +15,9 @@ You can try the live production version here:
 
 This is a fullstack application with an emphasis on real time systems and scalable system architecture.
 The application has a split deployment on vercerl and render.
--Frontend & API Layer (Next.js on Vercel): Handles authentication, and session management.
--WebSocket Server (Render): Powers live gameplay and chat features using Socket.IO, overcoming edge-function limitations of Vercel hosting.
--Data Layer (MongoDB Atlas + Prisma ORM): Provides a high availability, cloud database for user accounts, game history, and real-time statistics, with Prisma and Zod ensuring type-safe queries and schema management.
+- Frontend & API Layer (Next.js on Vercel): Handles authentication, and session management.
+- WebSocket Server (Render): Powers live gameplay and chat features using Socket.IO, overcoming edge-function limitations of Vercel hosting.
+- Data Layer (MongoDB Atlas + Prisma ORM): Provides a high availability, cloud database for user accounts, game history, and real-time statistics, with Prisma and Zod ensuring type-safe queries and schema management.
 
 ## Tech Stack 
 
