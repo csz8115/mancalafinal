@@ -45,49 +45,7 @@ User → Authentication details, stats, and session info.
 Game → Stores game states, results, and timestamps.
 Chat → Stores real-time chat messages.
 
-classDiagram
-    class User {
-      ObjectId id PK
-      string username (unique)
-      string password
-      DateTime createdAt
-      DateTime lastLogin?
-      string url?
-      int gamesPlayed
-      int gamesWon
-      int gamesLost
-      int gamesDrawn
-    }
-
-    class Game {
-      ObjectId id PK
-      string lobbyName (unique)
-      DateTime createdAt
-      DateTime updatedAt?
-      int[] board (default start state)
-      enum status (waiting|inProgress|complete)
-      enum current (player1|player2|bot)
-      ObjectId player1 FK
-      ObjectId player2 FK?
-      string winner
-    }
-
-    class Chat {
-      ObjectId id PK
-      string username
-      DateTime createdAt
-      DateTime updatedAt?
-      string message
-      ObjectId userId FK
-      ObjectId gameId?
-      string url
-    }
-
-    User "1" --> "many" Game : as player1
-    User "1" --> "many" Game : as player2
-    User "1" --> "many" Chat : writes
-    Game "1" --> "many" Chat : has messages
-
+![Mancala ERD](./src/img/mancala_erd.png)
 
 ### Redis Usage
 
