@@ -44,6 +44,25 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 - Game → Stores game states, results, and timestamps.
 - Chat → Stores real-time chat messages.
 
+
+### ⚡ Game Completion Trigger
+When a game is marked as **`complete`**, an application-level trigger (via Prisma `$extends`) automatically updates player stats:
+
+- Increments `gamesPlayed` for both users  
+- Adjusts `gamesWon`, `gamesLost`, or `gamesDrawn` depending on the outcome  
+- Logs updates for observability  
+
+Example snippet:  
+```ts
+// Triggered when Game.status = complete
+if (result.status === Status.complete) {
+  await prisma.user.update({
+    where: { id: player1 },
+    data: { gamesPlayed: { increment: 1 }, gamesWon: { increment: 1 } }
+  });
+  // ...updates player2 accordingly
+}
+
 ![Mancala ERD](./src/img/mancala_erd.png)
 
 ## 🔌 Real-Time Socket Events
