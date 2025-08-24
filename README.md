@@ -29,7 +29,6 @@ The application has a split deployment on vercerl and render.
 
 ### Databases
 - MongoDB Atlas (cloud database)
-- Redis (Caching and active session tracking)
 
 ### Deployment
 - Vercel (NextJS app deployment)
@@ -41,13 +40,8 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 
 ### Models
 
-User → Authentication details, stats, and session info.
-Game → Stores game states, results, and timestamps.
-Chat → Stores real-time chat messages.
+-User → Authentication details, stats, and session info.
+-Game → Stores game states, results, and timestamps.
+-Chat → Stores real-time chat messages.
 
 ![Mancala ERD](./src/img/mancala_erd.png)
-
-### Redis Usage
-
-- Tracks active user sessions for reports
-
