@@ -44,6 +44,7 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 - Game → Stores game states, results, and timestamps.
 - Chat → Stores real-time chat messages.
 
+![Mancala ERD](./src/img/mancala_erd.png)
 
 ### ⚡ Game Completion Trigger
 When a game is marked as **`complete`**, an application-level trigger (via Prisma `$extends`) automatically updates player stats:
@@ -63,8 +64,6 @@ if (result.status === Status.complete) {
   // ...updates player2 accordingly
 }
 ```
-
-![Mancala ERD](./src/img/mancala_erd.png)
 
 ## 🔌 Real-Time Socket Events
 
