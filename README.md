@@ -46,6 +46,57 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 
 ![Mancala ERD](./src/img/mancala_erd.png)
 
+## 🔌 Real-Time Socket Events
+
+This application uses **Socket.IO** to synchronize gameplay and chat between players in real time.  
+Each event is validated on the server, persisted to the database, and broadcasted to all connected clients.
+
+### Core Events
+
+- **connection / disconnect** → Tracks active users and cleans up sessions.  
+- **createLobby** → Creates a new game lobby and waits for an opponent.  
+- **joinLobby** → Allows a player to join an existing lobby.  
+- **makeMove** → Validates player moves, updates board state, persists to MongoDB, and broadcasts the new state.  
+- **gameOver** → Records the winner, updates user stats, and closes the session.  
+- **sendMessage** → Handles real-time chat between players within the lobby.  
+- **updateStats** → Triggers after game completion to update `gamesPlayed`, `gamesWon`, `gamesLost`, etc.  
+
+flowchart LR
+  A[Player A opens app] --> B[Login / Auth]
+  B --> C{Create or Join Lobby?}
+  C -->|Create| D[createLobby]
+  C -->|Join| E[joinLobby]
+
+  D --> F[Lobby created\n(waiting for opponent)]
+  E --> F
+  F --> G{Two players connected?}
+  G -->|No| F
+  G -->|Yes| H[startGame event\ncurrent = player1]
+
+  H --> I[makeMove(player, pitIndex)]
+  I --> J[Validate move\n(turn, rules)]
+  J -->|Invalid| I1[emit error]
+  J -->|Valid| K[Update board in memory]
+  K --> L[Persist move & board\nto MongoDB]
+  L --> M[Emit board update\n(to both players)]
+  M --> N{Game over?}
+  N -->|No| O[Switch turn\n(current = other player)] --> I
+  N -->|Yes| P[Compute winner]
+  P --> Q[Update user stats\n(gamesPlayed, wins, losses)]
+  Q --> R[Emit gameOver\n(with winner & final board)]
+  R --> S[Return to lobby or rematch]
+
+  %% chat / presence side-rail
+  subgraph Realtime Side Channels
+    T[sendMessage] --> U[Persist to Chat]
+    U --> V[Emit chat message]
+    W[connection/disconnect] --> X[Track presence in Redis]
+  end
+
+  F -. chat .-> T
+  H -. chat .-> T
+
+
 ## Frontend Showcase
 
 - Login/Register Page
@@ -83,7 +134,7 @@ npm run test:integration
 
 Test files live in the test directory 
 ```text
-tests/
+__tests__/
   ├── unit/
   │   ├── db.tests.ts
   │   ├── game-logic.tests.ts
