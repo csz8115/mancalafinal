@@ -45,48 +45,48 @@ User → Authentication details, stats, and session info.
 Game → Stores game states, results, and timestamps.
 Chat → Stores real-time chat messages.
 
-erDiagram
-    USER ||--o{ GAME : "as player1"
-    USER ||--o{ GAME : "as player2"
-    USER ||--o{ CHAT : "writes"
-    GAME o|--o{ CHAT : "messages (optional link)"
-
-    USER {
+classDiagram
+    class User {
       ObjectId id PK
-      string   username  "unique"
-      string   password
-      datetime createdAt
-      datetime lastLogin  "nullable"
-      string   url        "nullable"
-      int      gamesPlayed
-      int      gamesWon
-      int      gamesLost
-      int      gamesDrawn
+      string username (unique)
+      string password
+      DateTime createdAt
+      DateTime lastLogin?
+      string url?
+      int gamesPlayed
+      int gamesWon
+      int gamesLost
+      int gamesDrawn
     }
 
-    GAME {
+    class Game {
       ObjectId id PK
-      string   lobbyName  "unique"
-      datetime createdAt
-      datetime updatedAt  "nullable"
-      int[]    board      "default [4,4,4,4,4,4,0,4,4,4,4,4,4,0]"
-      enum     status     "waiting|inProgress|complete"
-      enum     current    "player1|player2|bot"
+      string lobbyName (unique)
+      DateTime createdAt
+      DateTime updatedAt?
+      int[] board (default start state)
+      enum status (waiting|inProgress|complete)
+      enum current (player1|player2|bot)
       ObjectId player1 FK
-      ObjectId player2 FK "nullable"
-      string   winner     "empty if none"
+      ObjectId player2 FK?
+      string winner
     }
 
-    CHAT {
+    class Chat {
       ObjectId id PK
-      string   username
-      datetime createdAt
-      datetime updatedAt  "nullable"
-      string   message
+      string username
+      DateTime createdAt
+      DateTime updatedAt?
+      string message
       ObjectId userId FK
-      ObjectId game      "nullable (no Prisma relation)"
-      string   url
+      ObjectId gameId?
+      string url
     }
+
+    User "1" --> "many" Game : as player1
+    User "1" --> "many" Game : as player2
+    User "1" --> "many" Chat : writes
+    Game "1" --> "many" Chat : has messages
 
 
 ### Redis Usage
