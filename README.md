@@ -43,6 +43,14 @@ This system uses Prisma ORM to build a schema defining schemas and relationships
 
 ![Mancala ERD](./src/img/mancala_erd.png)
 
+### 🔐 Database Roles
+
+To enforce security and least-privilege access, the following roles are used:
+
+- **MancalaDBA** → Full privileges for migrations and schema changes.  
+- **AppService** → Read/write access to core collections (`Users`, `Games`, `Chat`). No DDL privileges.  
+- **MancalaAnalyst** → Read-only access for reporting dashboards and monitoring.  
+
 ### ⚡ Game Completion Trigger
 When a game is marked as **`complete`**, an application-level trigger (via Prisma `$extends`) automatically updates player stats:
 
