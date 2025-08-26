@@ -102,7 +102,7 @@ Each event is validated on the server, persisted to the database, and broadcaste
 
 This project includes a comprehensive testing suite including Unit, Integration, and API level testing
 - Unit Tests: Validate game logic, board state transitions, and helper functions.
-- Integration Tests: Simulate player actions across WebSocket events and ensure consistent game outcomes.
+- Integration Tests: Simulate player actions across WebSocket events and ensure consistent game outcomes. (Coming Soon)
 - API Tests: Validate authentication, game creation, and stat updates using Jest + Supertest.
 
 ### Running Tests
